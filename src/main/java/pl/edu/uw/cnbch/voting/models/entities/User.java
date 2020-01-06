@@ -1,9 +1,8 @@
 package pl.edu.uw.cnbch.voting.models.entities;
 
-import org.springframework.data.jpa.repository.Query;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,14 +18,14 @@ public class User {
 
     @NotNull
     @NotEmpty
-    @Min(3)
-    @Pattern(regexp="[a-zA-Z]+")
+    @Length(min = 3)
+    @Pattern(regexp="[A-Z][a-z]+")
     private String firstName;
 
     @NotNull
     @NotEmpty
-    @Min(3)
-    @Pattern(regexp="[a-zA-Z-]+")
+    @Length(min = 3)
+    @Pattern(regexp="[A-Z][a-zA-Z-]+")
     private String lastName;
 
     @Column(nullable = false, unique = true)
@@ -34,7 +33,7 @@ public class User {
 
     @NotNull
     @NotEmpty
-    @Min(6)
+    @Length(min = 6)
     private String password;
 
     @NotNull

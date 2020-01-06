@@ -7,6 +7,7 @@ import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(1);
+        user.setUsername(user.getEmail());
+        user.setCreatedDate(LocalDateTime.now());
         Role userRole = roleRepository.findByName("ROLE_USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
