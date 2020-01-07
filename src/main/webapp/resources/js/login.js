@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setValidationParameters(inputUnderValidation);
 
         if (paramUnderValidationValue.match(regexp) &&
-            paramUnderValidationValueLengthGreaterOrEqual(minInputLength, paramUnderValidationValue)) {
+            paramUnderValidationValueLengthGreaterOrEqual(minInputLength)) {
 
             setFormFieldPositiveStyle(inputUnderValidation, errorMessageHandler);
             return true;
@@ -76,13 +76,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     break;
             }
         }
-    }
 
-    function paramUnderValidationValueLengthGreaterOrEqual(min, paramUnderValidationValue) {
-        if (paramUnderValidationValue.length >= min) {
-            return true;
-        } else {
-            return false;
+        function paramUnderValidationValueLengthGreaterOrEqual(min) {
+            if (paramUnderValidationValue.length >= min) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

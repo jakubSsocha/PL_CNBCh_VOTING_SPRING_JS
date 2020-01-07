@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setValidationParameters(inputUnderValidation);
 
         if (paramUnderValidationValue.match(regexp) &&
-            paramUnderValidationValueLengthGreaterOrEqual(minInputLength, paramUnderValidationValue)) {
+            paramUnderValidationValueLengthGreaterOrEqual(minInputLength)) {
 
             setFormFieldPositiveStyle(inputUnderValidation, errorMessageHandler);
             return true;
@@ -128,6 +128,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     break;
             }
         }
+
+        function paramUnderValidationValueLengthGreaterOrEqual(min) {
+            if (paramUnderValidationValue.length >= min) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     function comparePasswords() {
@@ -142,14 +150,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function passwordsAreEqual() {
             return PASSWORD_FORM_INPUT.value === CONFIRM_PASSWORD_FORM_INPUT.value;
-        }
-    }
-
-    function paramUnderValidationValueLengthGreaterOrEqual(min, paramUnderValidationValue) {
-        if (paramUnderValidationValue.length >= min) {
-            return true;
-        } else {
-            return false;
         }
     }
 
