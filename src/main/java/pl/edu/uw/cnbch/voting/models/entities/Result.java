@@ -12,13 +12,15 @@ public class Result {
 
     private LocalDateTime createdDate;
 
-    private LocalDateTime userVotedDate;
-
-    private LocalDateTime closedDate;
+    private boolean active;
 
     private String vote;
 
-    private boolean active;
+    private LocalDateTime userVotedDate;
+
+    private boolean closed;
+
+    private LocalDateTime closedDate;
 
     @ManyToOne
     private User user;
@@ -88,5 +90,13 @@ public class Result {
 
     public void setVoting(Voting voting) {
         this.voting = voting;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }

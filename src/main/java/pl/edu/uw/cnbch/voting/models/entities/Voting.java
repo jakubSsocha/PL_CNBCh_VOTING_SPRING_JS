@@ -36,8 +36,6 @@ public class Voting {
 
     private boolean closed;
 
-    private boolean voted;
-
     private boolean secret;
 
     @ManyToMany
@@ -145,11 +143,4 @@ public class Voting {
         this.results = results;
     }
 
-    public boolean isVoted() {
-        return voted;
-    }
-
-    public void setVoted(boolean voted) {
-        this.voted = voted;
-    }
 }
