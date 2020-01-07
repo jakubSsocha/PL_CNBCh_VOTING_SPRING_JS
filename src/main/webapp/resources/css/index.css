@@ -18,12 +18,6 @@
     }
 }
 
-p{
-    margin-top: 10px;
-    font-size: 20px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 img{
     margin: 40px;
 }
@@ -31,4 +25,24 @@ img{
 a{
     color: black;
     font-weight: bold;
+}
+
+.mainOptions_container_success{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    border-color: rgba(38, 166, 91, 0.5);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainOptions_container_error{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    border-color: rgba(217, 30, 24, 0.7);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainOptions_text{
+    font-size: 25px;
 }

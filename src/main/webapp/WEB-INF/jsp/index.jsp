@@ -13,23 +13,29 @@
 </head>
 <body>
 <header>
-<div class="container-fluid">
-    <ul class="nav navbar-nav navbar-left">
-        <li><a class="navbar-brand" href="http://www.cnbch.uw.edu.pl">CNBCh UW</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="/login" style="margin-right: 10px"><span class="glyphicon glyphicon-log-in"></span> Zaloguj się</a></li>
-    </ul>
-</div>
+    <header>
+        <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/headers/nooneLoginHeader.jsp"></jsp:include>
+    </header>
 </header>
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav"></div>
-        <div class="col-sm-8 text-center">
-            <p>${text}</p>
-            <img src="${pageContext.request.contextPath}/resources/img/cnbch.png"/>
+        <div class="col-sm-3 sidenav"></div>
+        <div class="col-sm-6 text-center">
+            <div
+                    <c:choose>
+                        <c:when test="${message.type == 'error'}">
+                            class="mainOptions_container_error"
+                        </c:when>
+                        <c:otherwise>
+                            class="mainOptions_container_success"
+                        </c:otherwise>
+                    </c:choose>
+            >
+                <p class="mainOptions_text">${message.text}</p>
+            </div>
+                <img src="${pageContext.request.contextPath}/resources/img/cnbch.png"/>
         </div>
-        <div class="col-sm-2 sidenav"></div>
+        <div class="col-sm-3 sidenav"></div>
     </div>
 </div>
 </body>

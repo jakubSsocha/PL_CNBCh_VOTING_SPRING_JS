@@ -13,15 +13,9 @@
 </head>
 <body>
 <header>
-    <div class="container-fluid">
-        <ul class="nav navbar-nav navbar-left">
-            <li><a class="navbar-brand" href="http://www.cnbch.uw.edu.pl">CNBCh UW</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login" style="margin-right: 10px"><span class="glyphicon glyphicon-log-in"></span>Logowanie</a>
-            </li>
-        </ul>
-    </div>
+    <header>
+        <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/headers/nooneLoginHeader.jsp"></jsp:include>
+    </header>
 </header>
 <div class="row">
     <div class="col-lg-3"></div>

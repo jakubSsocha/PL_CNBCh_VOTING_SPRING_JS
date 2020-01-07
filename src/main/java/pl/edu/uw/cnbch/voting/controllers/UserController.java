@@ -1,12 +1,14 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.edu.uw.cnbch.voting.models.entities.User;
+import pl.edu.uw.cnbch.voting.models.viewHelpers.MessageHelper;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import javax.validation.Valid;
@@ -29,12 +31,25 @@ public class UserController {
 
     @PostMapping("/user/add")
     public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model){
+
         if(bindingResult.hasErrors()){
-            model.addAttribute("text", "Nie udało się utworzyć użytkownika");
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Nie udało się utworzyć użytkownika",
+                    "error"));
             return "index.jsp";
         }
-        userService.saveUser(user);
-        model.addAttribute("text", "Użytkownik utworzony pomyślnie");
+
+        try {
+            userService.saveUser(user);
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Użytkownik utworzony pomyślnie",
+                    "success"));
+        } catch (DataIntegrityViolationException e){
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Użytkownik o podanym adresie e-mail:<br /> <b>" + user.getEmail() + "</b><br /> jest już zarejestrowany w bazie danych",
+                    "error"));
+            return "index.jsp";
+        }
         return "index.jsp";
     }
 

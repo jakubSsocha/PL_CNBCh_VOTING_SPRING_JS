@@ -1,117 +1,167 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let firstName = document.getElementById("firstName");
-    let lastName = document.getElementById("lastName");
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    let confirmPassword = document.getElementById("password2");
-    let hidePassword = document.getElementById("hidePassword");
-    let submitForm = document.getElementById("submitForm");
 
-    let firstNameValidator = false;
-    let lastNameValidator = false;
-    let emailValidator = false;
-    let passwordValidator = false;
-    let passwordComparator = false;
+    const MIN_STRING_LENGTH = 3;
+    const MIN_PASSWORD_LENGTH = 6;
+    const MIN_EMAIL_LENGTH = 6;
 
-    submitForm.addEventListener("click", function (event) {
-        if (allConditionsValid()) {
+    const FIRST_NAME_FORM_INPUT = document.getElementById("firstName");
+    const LAST_NAME_FORM_INPUT = document.getElementById("lastName");
+    const EMAIL_FORM_INPUT = document.getElementById("email");
+    const PASSWORD_FORM_INPUT = document.getElementById("password");
+    const CONFIRM_PASSWORD_FORM_INPUT = document.getElementById("password2");
+    const SHOW_OR_HIDE_PASSWORDS_FORM_CHECKBOX = document.getElementById("hidePassword");
+    const SUBMIT_FORM_BUTTON = document.getElementById("submitForm");
+
+    let isFirstNameValidationResultPositive = false;
+    let isLastNameValidationResultPositive = false;
+    let isEmailValidationResultPositive = false;
+    let isPasswordValidationResultPositive = false;
+    let isPasswordComparatorValidationResultPositive = false;
+
+    FIRST_NAME_FORM_INPUT.addEventListener("keyup", function () {
+        isFirstNameValidationResultPositive = validate(FIRST_NAME_FORM_INPUT);
+    });
+
+    LAST_NAME_FORM_INPUT.addEventListener("keyup", function () {
+        isLastNameValidationResultPositive = validate(LAST_NAME_FORM_INPUT);
+    });
+
+    EMAIL_FORM_INPUT.addEventListener("keyup", function () {
+        isEmailValidationResultPositive = validate(EMAIL_FORM_INPUT);
+    });
+
+    PASSWORD_FORM_INPUT.addEventListener("keyup", function () {
+        isPasswordValidationResultPositive = validate(PASSWORD_FORM_INPUT);
+    });
+
+    CONFIRM_PASSWORD_FORM_INPUT.addEventListener("keyup", function () {
+        isPasswordComparatorValidationResultPositive = comparePasswords();
+    });
+
+    SHOW_OR_HIDE_PASSWORDS_FORM_CHECKBOX.addEventListener("click", function () {
+        if (SHOW_OR_HIDE_PASSWORDS_FORM_CHECKBOX.checked) {
+            PASSWORD_FORM_INPUT.setAttribute("type", "password");
+            CONFIRM_PASSWORD_FORM_INPUT.setAttribute("type", "password");
+        } else {
+            PASSWORD_FORM_INPUT.setAttribute("type", "text");
+            CONFIRM_PASSWORD_FORM_INPUT.setAttribute("type", "text");
+        }
+    });
+
+    SUBMIT_FORM_BUTTON.addEventListener("click", function (event) {
+        sendFormIf(allConditionsValid());
+    });
+
+    function sendFormIf(allConditionsValid) {
+        if (allConditionsValid) {
+            disableConfirmPasswordInputSending()
+            this.event.returnValue = true;
+        } else {
+            this.event.preventDefault();
+        }
+
+        function disableConfirmPasswordInputSending() {
             $('#password2').prop('disabled', true);
-            event.returnValue = true;
-        } else {
-            event.preventDefault();
         }
-    });
-
-    firstName.addEventListener("keyup", function () {
-        let message = document.getElementById("firstName_validator");
-        let firstNameFormat = /[A-Z][a-z]+/;
-        if (firstName.value.match(firstNameFormat) && firstName.value.length > 2) {
-            setPositiveStyle(firstName, message)
-            firstNameValidator = true;
-        } else {
-            setNegativeStyle(firstName, message, "Błędne dane")
-            firstNameValidator = false;
-        }
-    });
-
-    lastName.addEventListener("keyup", function () {
-        let message = document.getElementById("lastName_validator");
-        let lastNameFormat = /[A-Z][a-zA-Z-]+/;
-        if (lastName.value.match(lastNameFormat) && lastName.value.length > 2) {
-            setPositiveStyle(lastName, message);
-            lastNameValidator = true;
-        } else {
-            setNegativeStyle(lastName, message, "Błędne dane");
-            lastNameValidator = false;
-        }
-    });
-
-    email.addEventListener("keyup", function () {
-        let message = document.getElementById("email_validator");
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if(email.value.match(mailformat)){
-            setPositiveStyle(email,message);
-            emailValidator = true;
-        } else {
-            setNegativeStyle(email, message, "To nie jest adres email");
-            emailValidator = false;
-        }
-    });
-
-    password.addEventListener("keyup", function () {
-        let message = document.getElementById("password1_validator");
-        if(password.value.length > 5){
-            setPositiveStyle(password, message);
-            passwordValidator = true;
-        } else {
-            setNegativeStyle(password, message, "Hasło musi mieć minimum 6 znaków");
-            passwordValidator = false;
-        }
-    });
-
-    confirmPassword.addEventListener("keyup", function () {
-        let message = document.getElementById("password2_validator");
-        if(confirmPassword.value.length > 5 && password.value === confirmPassword.value){
-            setPositiveStyle(confirmPassword, message);
-            passwordComparator = true;
-        } else {
-            setNegativeStyle(confirmPassword, message, "Podane hasła nie są takie same");
-            passwordComparator = false;
-        }
-    });
-
-    hidePassword.addEventListener("click", function () {
-        if(hidePassword.checked){
-            password.setAttribute("type", "password");
-            confirmPassword.setAttribute("type", "password");
-        } else {
-            password.setAttribute("type", "text");
-            confirmPassword.setAttribute("type", "text");
-        }
-    });
+    }
 
     function allConditionsValid() {
-        if (firstNameValidator &&
-            lastNameValidator &&
-            emailValidator &&
-            passwordValidator &&
-            passwordComparator) {
+        if (isFirstNameValidationResultPositive &&
+            isLastNameValidationResultPositive &&
+            isEmailValidationResultPositive &&
+            isPasswordValidationResultPositive &&
+            isPasswordComparatorValidationResultPositive) {
             return true;
         }
         return false;
     }
 
-    function setPositiveStyle(param, message) {
-        param.style.borderColor = "green";
-        message.innerText = null;
+    function validate(inputUnderValidation) {
+
+        let regexp;
+        let paramUnderValidationValue;
+        let minInputLength;
+        let errorMessageHandler;
+        let errorMessageText;
+
+        setValidationParameters(inputUnderValidation);
+
+        if (paramUnderValidationValue.match(regexp) &&
+            paramUnderValidationValueLengthGreaterOrEqual(minInputLength, paramUnderValidationValue)) {
+
+            setFormFieldPositiveStyle(inputUnderValidation, errorMessageHandler);
+            return true;
+        } else {
+            setFormFieldNegativeStyle(inputUnderValidation, errorMessageHandler, errorMessageText);
+            return false;
+        }
+
+        function setValidationParameters(inputUnderValidation) {
+            switch (inputUnderValidation) {
+                case FIRST_NAME_FORM_INPUT:
+                    regexp = /[A-Z][a-z]+/;
+                    paramUnderValidationValue = FIRST_NAME_FORM_INPUT.value;
+                    minInputLength = MIN_STRING_LENGTH;
+                    errorMessageHandler = document.getElementById("firstName_validator");
+                    errorMessageText = "To pole może zawierać tylko wielkie i małe litery";
+                    break;
+                case LAST_NAME_FORM_INPUT:
+                    regexp = /[A-Z][a-zA-Z-]+/;
+                    paramUnderValidationValue = LAST_NAME_FORM_INPUT.value;
+                    minInputLength = MIN_STRING_LENGTH;
+                    errorMessageHandler = document.getElementById("lastName_validator");
+                    errorMessageText = "To pole może zawierać tylko wielkie i małe litery oraz '-' ";
+                    break;
+                case EMAIL_FORM_INPUT:
+                    regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    paramUnderValidationValue = EMAIL_FORM_INPUT.value;
+                    minInputLength = MIN_EMAIL_LENGTH;
+                    errorMessageHandler = document.getElementById("email_validator");
+                    errorMessageText = "Niepoprawny adres e-mail";
+                    break;
+                case PASSWORD_FORM_INPUT:
+                    regexp = /(.*?)/;
+                    paramUnderValidationValue = PASSWORD_FORM_INPUT.value;
+                    minInputLength = MIN_PASSWORD_LENGTH;
+                    errorMessageHandler = document.getElementById("password1_validator");
+                    errorMessageText = "Hasło musi mieć minimum 6 znaków";
+                    break;
+            }
+        }
     }
 
-    function setNegativeStyle(param, message, errortext) {
-        param.style.borderColor = "red";
-        message.style.color = "red";
-        message.innerText = errortext;
+    function comparePasswords() {
+        let errorMessageHandler = document.getElementById("password2_validator");
+        if (passwordsAreEqual()) {
+            setFormFieldPositiveStyle(CONFIRM_PASSWORD_FORM_INPUT, errorMessageHandler);
+            return true;
+        } else {
+            setFormFieldNegativeStyle(CONFIRM_PASSWORD_FORM_INPUT, errorMessageHandler, "Podane hasła nie są takie same");
+            return  false;
+        }
+
+        function passwordsAreEqual() {
+            return PASSWORD_FORM_INPUT.value === CONFIRM_PASSWORD_FORM_INPUT.value;
+        }
     }
 
+    function paramUnderValidationValueLengthGreaterOrEqual(min, paramUnderValidationValue) {
+        if (paramUnderValidationValue.length >= min) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    function setFormFieldPositiveStyle(inputFormField, validationFailMessageHandler) {
+        inputFormField.style.borderColor = "green";
+        validationFailMessageHandler.innerText = null;
+    }
+
+    function setFormFieldNegativeStyle(inputFormField, validationFailMessageHandler, validationFailMessageText) {
+        inputFormField.style.borderColor = "red";
+        validationFailMessageHandler.style.color = "red";
+        validationFailMessageHandler.innerText = validationFailMessageText;
+    }
 
 })
