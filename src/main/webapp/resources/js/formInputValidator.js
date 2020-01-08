@@ -18,7 +18,7 @@ export function validate(InputField) {
         return true;
     } else {
 
-        setHtmlInputBorder(COLOR_POSITIVE);
+        setHtmlInputBorder(COLOR_NEGATIVE);
         print(ERRORMESSAGE);
         return false;
     }

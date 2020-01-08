@@ -36,4 +36,4 @@
 </div>
 </body>
 </html>
-<script src="${pageContext.request.contextPath}/resources/js/createUser.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/createUser.js" type="application/javascript"></script>
