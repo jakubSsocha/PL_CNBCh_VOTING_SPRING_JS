@@ -1,100 +1,58 @@
+import {validate} from "./formInputValidator.js";
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const MIN_PASSWORD_LENGTH = 6;
     const MIN_EMAIL_LENGTH = 6;
 
-    const EMAIL_FORM_INPUT = document.getElementById("loginInput_email");
-    const PASSWORD_FORM_INPUT = document.getElementById("loginInput_password");
-    const SUBMIT_FORM_BUTTON = document.getElementById("loginInput_submit");
+    const EMAIL_FORM_INPUT = {
+        htmlHandler: document.getElementById("loginInput_email"),
+        regexp: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        minInputLength: MIN_EMAIL_LENGTH,
+        messageHandler: document.getElementById("loginInput_email_validator"),
+        errorMessage: "Niepoprawny adres e-mail"
+    };
+
+    const PASSWORD_FORM_INPUT = {
+        htmlHandler: document.getElementById("loginInput_password"),
+        regexp: /(.*?)/,
+        minInputLength: MIN_PASSWORD_LENGTH,
+        messageHandler: document.getElementById("loginInput_password_validator"),
+        errorMessage: "Hasło musi mieć minimum 6 znaków"
+    };
+
+    const SUBMIT_BUTTON = document.getElementById("loginInput_submit");
 
     let isEmailValidationResultPositive = false;
     let isPasswordValidationResultPositive = false;
 
-    EMAIL_FORM_INPUT.addEventListener("keyup", function () {
+    EMAIL_FORM_INPUT.htmlHandler.addEventListener("keyup", function () {
         isEmailValidationResultPositive = validate(EMAIL_FORM_INPUT);
     });
 
-    PASSWORD_FORM_INPUT.addEventListener("keyup", function () {
+    PASSWORD_FORM_INPUT.htmlHandler.addEventListener("keyup", function () {
         isPasswordValidationResultPositive = validate(PASSWORD_FORM_INPUT);
     });
 
-    SUBMIT_FORM_BUTTON.addEventListener("click", function (event) {
+    SUBMIT_BUTTON.addEventListener("click", function (event) {
         sendFormIf(allConditionsValid());
-    });
 
-    function sendFormIf(allConditionsValid) {
-        if (allConditionsValid) {
-            this.event.returnValue = true;
-        } else {
-            this.event.preventDefault();
-        }
-    }
-
-    function allConditionsValid() {
-        if (isEmailValidationResultPositive &&
-            isPasswordValidationResultPositive) {
-            return true;
-        }
-        return false;
-    }
-
-    function validate(inputUnderValidation) {
-
-        let regexp;
-        let paramUnderValidationValue;
-        let minInputLength;
-        let errorMessageHandler;
-        let errorMessageText;
-
-        setValidationParameters(inputUnderValidation);
-
-        if (paramUnderValidationValue.match(regexp) &&
-            paramUnderValidationValueLengthGreaterOrEqual(minInputLength)) {
-
-            setFormFieldPositiveStyle(inputUnderValidation, errorMessageHandler);
-            return true;
-        } else {
-            setFormFieldNegativeStyle(inputUnderValidation, errorMessageHandler, errorMessageText);
-            return false;
-        }
-
-        function setValidationParameters(inputUnderValidation) {
-            switch (inputUnderValidation) {
-                case EMAIL_FORM_INPUT:
-                    regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                    paramUnderValidationValue = EMAIL_FORM_INPUT.value;
-                    minInputLength = MIN_EMAIL_LENGTH;
-                    errorMessageHandler = document.getElementById("loginInput_email_validator");
-                    errorMessageText = "Niepoprawny adres e-mail";
-                    break;
-                case PASSWORD_FORM_INPUT:
-                    regexp = /(.*?)/;
-                    paramUnderValidationValue = PASSWORD_FORM_INPUT.value;
-                    minInputLength = MIN_PASSWORD_LENGTH;
-                    errorMessageHandler = document.getElementById("loginInput_password_validator");
-                    errorMessageText = "Hasło musi mieć minimum 6 znaków";
-                    break;
+        function sendFormIf(allConditionsValid) {
+            if (allConditionsValid) {
+                event.returnValue = true;
+            } else {
+                event.preventDefault();
             }
         }
 
-        function paramUnderValidationValueLengthGreaterOrEqual(min) {
-            if (paramUnderValidationValue.length >= min) {
+        function allConditionsValid() {
+            if (isEmailValidationResultPositive &&
+                isPasswordValidationResultPositive) {
                 return true;
             } else {
                 return false;
             }
         }
-    }
-
-    function setFormFieldPositiveStyle(inputFormField, validationFailMessageHandler) {
-        inputFormField.style.borderColor = "green";
-        validationFailMessageHandler.innerText = null;
-    }
-
-    function setFormFieldNegativeStyle(inputFormField, validationFailMessageHandler, validationFailMessageText) {
-        inputFormField.style.borderColor = "red";
-        validationFailMessageHandler.style.color = "red";
-        validationFailMessageHandler.innerText = validationFailMessageText;
-    }
+    });
 
 });

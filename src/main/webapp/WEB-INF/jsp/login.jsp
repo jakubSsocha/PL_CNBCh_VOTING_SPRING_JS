@@ -51,4 +51,4 @@
 </div>
 </body>
 </html>
-<script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/login.js" type="application/javascript"></script>
