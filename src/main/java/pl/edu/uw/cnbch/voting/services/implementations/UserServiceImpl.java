@@ -1,4 +1,4 @@
-package pl.edu.uw.cnbch.voting.services;
+package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -6,10 +6,12 @@ import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
+import pl.edu.uw.cnbch.voting.services.UserService;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,4 +43,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<User> findAllActiveUsers() {
+        return userRepository.findAll();
+    }
 }

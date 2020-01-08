@@ -13,7 +13,7 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("message",MessageHelper.generateMessage(
                 "Witaj w systemie głosowania CNBCh UW",
-                "success"));
+                "welcome"));
         return "index.jsp"; }
 
     @GetMapping("/about")

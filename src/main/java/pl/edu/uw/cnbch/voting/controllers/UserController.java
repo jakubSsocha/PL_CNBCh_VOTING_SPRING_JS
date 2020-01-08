@@ -22,15 +22,15 @@ public class UserController {
     }
 
     @GetMapping("/user/add")
-    public String goToCreateUserForm(Model model){
+    public String goToCreateUserForm(Model model) {
         model.addAttribute("user", new User());
         return "createUser.jsp";
     }
 
     @PostMapping("/user/add")
-    public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model){
+    public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("message", MessageHelper.generateMessage(
                     "Nie udało się utworzyć użytkownika",
                     "error"));
@@ -38,16 +38,19 @@ public class UserController {
         }
 
         try {
+
             userService.saveUser(user);
+
+        } catch (DataIntegrityViolationException e) {
+
             model.addAttribute("message", MessageHelper.generateMessage(
-                    "Użytkownik utworzony pomyślnie",
-                    "success"));
-        } catch (DataIntegrityViolationException e){
-            model.addAttribute("message", MessageHelper.generateMessage(
-                    "Użytkownik o podanym adresie e-mail:<br /> <b>" + user.getEmail() + "</b><br /> jest już zarejestrowany w bazie danych",
+                    "Użytkownik o podanym adresie e-mail:<br />" + user.getEmail() + "<br /> jest już zarejestrowany w bazie danych",
                     "error"));
             return "index.jsp";
         }
+        model.addAttribute("message", MessageHelper.generateMessage(
+                "Użytkownik utworzony pomyślnie",
+                "success"));
         return "index.jsp";
     }
 

@@ -153,4 +153,8 @@ public class User {
     public void setResults(List<Result> results) {
         this.results = results;
     }
+
+    public String getName(){
+        return firstName + " " + lastName;
+    }
 }

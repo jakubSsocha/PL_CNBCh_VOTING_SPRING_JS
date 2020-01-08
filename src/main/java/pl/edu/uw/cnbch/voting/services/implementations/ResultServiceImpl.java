@@ -1,4 +1,4 @@
-package pl.edu.uw.cnbch.voting.services;
+package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
+import pl.edu.uw.cnbch.voting.services.ResultService;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
