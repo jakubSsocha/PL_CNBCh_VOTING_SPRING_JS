@@ -30,14 +30,22 @@
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse${voting.id}" class="buttons"
                         data-id="${voting.id}">
-                            <b>${theCount.index+1}. </b> ${voting.name} : ${voting.text}
+                            <b>${theCount.index+1}. ${voting.name} : ${voting.text}</b>
                         </a>
                     </h4>
                 </div>
                 <div id="collapse${voting.id}" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <div class="mainOptions_container">
-                            <p class="mainOptions_text">Informacje ogólne:</p>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Opcje:</p>
+                            <div style="text-align: center">
+                                <button class="btn btn-warning">Edytuj</button>
+                                <button class="btn btn-danger">Usuń</button>
+                                <button class="btn btn-primary">Zamknij</button>
+                            </div>
+                        </div>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Informacje ogólne:</p>
                             <p>Czy głosowanie jest:</p>
                             <ul>
                                 <li><b>zamknięte: </b><span id="closed${voting.id}"></span></li>
@@ -51,17 +59,18 @@
                                 <li><b>data zamknięcia: </b><span id="closedDate${voting.id}"></span></li>
                             </ul>
                         </div>
-                        <div class="mainOptions_container">
-                            <p class="mainOptions_text">Treść głosowania:</p>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Treść głosowania:</p>
                             <span id="text${voting.id}"></span>
                         </div>
-                        <div class="mainOptions_container">
-                            <p class="mainOptions_text">Głosujący:</p>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Głosujący:</p>
                             <div id="users${voting.id}">
                             </div>
                         </div>
-                        <div class="mainOptions_container">
-                            <p class="mainOptions_text">Komentarze:</p>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Komentarze:</p>
+                            <div>Funkcjonalność zostanie dodana w przyszłości</div>
                         </div>
                     </div>
                 </div>
@@ -72,4 +81,4 @@
 <div class="col-lg-3"></div>
 </body>
 </html>
-<script src="${pageContext.request.contextPath}/resources/js/allVoting.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/allVotings.js"></script>

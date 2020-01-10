@@ -35,6 +35,7 @@ public class User {
     @NotNull
     @NotEmpty
     @Length(min = 6)
+    @JsonIgnore
     private String password;
 
     @NotNull

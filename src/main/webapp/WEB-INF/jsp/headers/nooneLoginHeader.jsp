@@ -7,7 +7,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="/user/login" style="margin-right: 10px"><span class="glyphicon glyphicon-log-in"></span> Zaloguj się</a></li>
+        <li><a href="/login" style="margin-right: 10px"><span class="glyphicon glyphicon-log-in"></span> Zaloguj się</a></li>
     </ul>
 </div>
 </html>
