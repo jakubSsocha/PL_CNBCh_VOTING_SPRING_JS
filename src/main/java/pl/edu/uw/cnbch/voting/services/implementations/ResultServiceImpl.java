@@ -9,6 +9,7 @@ import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +49,8 @@ public class ResultServiceImpl implements ResultService {
         }
     }
 
+    @Override
+    public List<Result> getAllResultsForVotingWith(Long id) {
+        return resultRepository.findByVotingId(id);
+    }
 }

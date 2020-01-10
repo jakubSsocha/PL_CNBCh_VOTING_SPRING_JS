@@ -4,18 +4,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.models.viewHelpers.MessageHelper;
+import pl.edu.uw.cnbch.voting.models.viewHelpers.AllVotingViewHelper;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 import pl.edu.uw.cnbch.voting.services.VotingService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class VotingController {
     }
 
     @GetMapping("/add")
-    public String goToAddNewVotingForm(Model model){
+    public String goToAddNewVotingForm(Model model) {
         model.addAttribute("voting", new Voting());
         return "createVoting.jsp";
     }
@@ -50,7 +49,7 @@ public class VotingController {
         try {
             votingService.createNew(voting);
             Optional<Voting> VotingFromDatabase = votingService.findVotingByName(voting.getName());
-            if(VotingFromDatabase.isPresent()){
+            if (VotingFromDatabase.isPresent()) {
                 resultService.createEmptyResultsForAllUsersOf(VotingFromDatabase.get());
             } else {
                 model.addAttribute("message", MessageHelper.generateMessage(
@@ -70,9 +69,32 @@ public class VotingController {
         return "index.jsp";
     }
 
+    @GetMapping("/all")
+    public String getAllVotingBasicInfo(Model model) {
+        model.addAttribute("allVotings", getVotesIdentifyingDate());
+        return "allVotings.jsp";
+    }
+
     @ModelAttribute("allUsers")
-    public List<User> getAllUsersList(){
+    public List<User> getAllUsersList() {
         return userService.findAllActiveUsers();
     }
 
+    private List<AllVotingViewHelper> getVotesIdentifyingDate(){
+        List<AllVotingViewHelper> allVotingViewHelper = new ArrayList<>();
+        for (Voting v : votingService.getAllVotingsIdTextNameAndClosed()) {
+            allVotingViewHelper.add(new AllVotingViewHelper(
+                    v.getId(),
+                    v.getName(),
+                    v.getDescription(),
+                    v.isClosed()));
+        }
+        return allVotingViewHelper;
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Voting returnAllVotingData(@PathVariable Long id){
+        return votingService.findVotingByID(id).get();
+    }
 }

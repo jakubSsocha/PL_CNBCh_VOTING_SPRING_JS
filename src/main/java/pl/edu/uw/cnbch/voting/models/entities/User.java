@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -47,14 +48,17 @@ public class User {
 
     private int enabled;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users", cascade = CascadeType.MERGE)
     private List<Voting> userVotings = new ArrayList<Voting>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Result> results = new ArrayList<Result>();
 

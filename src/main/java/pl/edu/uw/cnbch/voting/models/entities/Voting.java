@@ -1,5 +1,7 @@
 package pl.edu.uw.cnbch.voting.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -38,12 +40,14 @@ public class Voting {
 
     private boolean secret;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "users_votings",
             joinColumns = @JoinColumn(name = "voting_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<User>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="voting", cascade = CascadeType.ALL)
     private List<Result> results = new ArrayList<Result>();
 

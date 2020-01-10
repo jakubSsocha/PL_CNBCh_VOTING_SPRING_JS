@@ -7,6 +7,7 @@ import pl.edu.uw.cnbch.voting.repositories.VotingRepository;
 import pl.edu.uw.cnbch.voting.services.VotingService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,11 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
+    public Optional<Voting> findVotingByID(Long id) {
+        return votingRepository.findById(id);
+    }
+
+    @Override
     public Optional<Voting> findVotingByName(String votingName) {
         return votingRepository.findByName(votingName);
     }
@@ -26,6 +32,14 @@ public class VotingServiceImpl implements VotingService {
     @Override
     public void createNew(Voting voting) {
         ifVotingDoesntExistSaveInDatabase(newVoting(voting));
+    }
+
+    private Voting newVoting(Voting voting) {
+        LocalDateTime now = LocalDateTime.now();
+        voting.setCreatedDate(now);
+        voting.setActive(true);
+        voting.setClosed(false);
+        return voting;
     }
 
     private void ifVotingDoesntExistSaveInDatabase(Voting voting) {
@@ -41,11 +55,9 @@ public class VotingServiceImpl implements VotingService {
         votingRepository.save(voting);
     }
 
-    private Voting newVoting(Voting voting) {
-        LocalDateTime now = LocalDateTime.now();
-        voting.setCreatedDate(now);
-        voting.setActive(true);
-        voting.setClosed(false);
-        return voting;
+    @Override
+    public List<Voting> getAllVotingsIdTextNameAndClosed() {
+        return votingRepository.selectAllVotingBasicInfoOrdered();
     }
+
 }
