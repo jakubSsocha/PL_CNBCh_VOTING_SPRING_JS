@@ -24,14 +24,22 @@
             <div
                     <c:choose>
                         <c:when test="${message.type == 'error'}">
-                            class="mainOptions_container_error"
+                            class="alert"
                         </c:when>
-                        <c:otherwise>
-                            class="mainOptions_container_success"
-                        </c:otherwise>
+                        <c:when test="${message.type == 'success'}">
+                            class="success"
+                        </c:when>
                     </c:choose>
             >
-                <p class="mainOptions_text">${message.text}</p>
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <c:choose>
+                    <c:when test="${message.type == 'error'}">
+                        <strong>Uwaga!</strong> ${message.text}
+                    </c:when>
+                    <c:when test="${message.type == 'success'}">
+                        <strong>Sukces!</strong> ${message.text}
+                    </c:when>
+                </c:choose>
             </div>
                 <img src="${pageContext.request.contextPath}/resources/img/cnbch.png"/>
         </div>

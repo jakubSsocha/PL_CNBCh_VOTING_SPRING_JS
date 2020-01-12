@@ -32,6 +32,11 @@ public class VotingController {
         this.userService = userService;
     }
 
+    @ModelAttribute("allUsers")
+    public List<User> getAllUsersList() {
+        return userService.findAllActiveUsers();
+    }
+
     @GetMapping("/add")
     public String goToAddNewVotingForm(Model model) {
         model.addAttribute("voting", new Voting());
@@ -75,11 +80,6 @@ public class VotingController {
         return "allVotings.jsp";
     }
 
-    @ModelAttribute("allUsers")
-    public List<User> getAllUsersList() {
-        return userService.findAllActiveUsers();
-    }
-
     private List<AllVotingViewHelper> getVotesIdentifyingDate(){
         List<AllVotingViewHelper> allVotingViewHelper = new ArrayList<>();
         for (Voting v : votingService.getAllVotingsIdTextNameAndClosed()) {
@@ -96,5 +96,35 @@ public class VotingController {
     @ResponseBody
     public Voting returnAllVotingData(@PathVariable Long id){
         return votingService.findVotingByID(id).get();
+    }
+
+    @GetMapping("/edit/{id}")
+    public String goToEditForm(@PathVariable Long id, Model model){
+        model.addAttribute("voting", votingService.findVotingByID(id).get());
+        return "createVoting.jsp";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editVotingData(@Valid Voting voting,
+                                 BindingResult bindingResult,
+                                 Model model,
+                                 @PathVariable Long id){
+        try {
+            if(bindingResult.hasErrors()){
+                model.addAttribute("message", MessageHelper.generateMessage(
+                        "Przynajmniej jeden z parametrów niepoprawny. Wprowadź nowe dane i spróbuj ponownie",
+                        "error"
+                ));
+                return "redirect:/";
+            }
+            votingService.edit(voting);
+        } catch (Exception e){
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "redirect:/";
+        }
+        return "redirect:/voting/all";
     }
 }

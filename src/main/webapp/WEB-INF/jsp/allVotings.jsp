@@ -38,11 +38,20 @@
                     <div class="panel-body">
                         <div class="additionalOptions_container">
                             <p class="additionalOptions_text">Opcje:</p>
-                            <div style="text-align: center">
-                                <button class="btn btn-warning">Edytuj</button>
-                                <button class="btn btn-danger">Usuń</button>
-                                <button class="btn btn-primary">Zamknij</button>
-                            </div>
+                            <c:choose>
+                                <c:when test="${voting.closed == false}">
+                                    <div style="text-align: center">
+                                        <button class="btn btn-warning" onclick="window.location.href='/voting/edit/${voting.id}'">Edytuj</button>
+                                        <button class="btn btn-danger" onclick="window.location.href='/voting/delete/${voting.id}'">Usuń</button>
+                                        <button class="btn btn-primary" onclick="window.location.href='/voting/close/${voting.id}'">Zamknij</button>
+                                    </div>
+                                </c:when>
+                                <c:when test="${voting.closed == true}">
+                                    <div style="text-align: center">
+                                        <button class="btn btn-success" onclick="window.location.href='/voting/result/${voting.id}'">Wyniki</button>
+                                    </div>
+                                </c:when>
+                            </c:choose>
                         </div>
                         <div class="additionalOptions_container">
                             <p class="additionalOptions_text">Informacje ogólne:</p>

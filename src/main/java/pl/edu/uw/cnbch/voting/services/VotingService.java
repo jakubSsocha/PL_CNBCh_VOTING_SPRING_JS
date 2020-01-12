@@ -18,4 +18,5 @@ public interface VotingService {
     @Query("select v.id, v.description, v.createdDate, v.closed, v.closedDate, v.active from Voting v where v.id = :id")
     Optional<Voting> findVotingByID(@Param("id") Long id);
 
+    void edit(Voting voting) throws Exception;
 }

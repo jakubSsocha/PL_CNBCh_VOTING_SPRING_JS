@@ -25,20 +25,40 @@
         <div>Opis: <span id="description_validator"></span><form:input path="description" class="form-control"
                                                                        id="description"/></div>
         <div>Treść głosowania: <form:textarea path="text" class="form-control"
-                                                                                id="text" rows="5"/></div>
+                                              id="text" rows="5"/></div>
         <div style="text-align: center">
-        <div style="display: inline-block">Głosowanie aktywne <form:checkbox path="active" class="form-control" id="active"/></div>
-        <div style="display: inline-block; margin-left: 80px">Głosowanie tajne <form:checkbox path="secret" class="form-control" id="secret"/></div>
+            <div style="display: inline-block">Głosowanie aktywne <form:checkbox path="active" class="form-control"
+                                                                                 id="active"/></div>
+            <div style="display: inline-block; margin-left: 80px">Głosowanie tajne
+                <c:choose>
+                    <c:when test="${voting.secret == true}">
+                        <form:checkbox path="secret" class="form-control" id="secret" disabled="true"/>
+                    </c:when>
+                    <c:otherwise>
+                        <form:checkbox path="secret" class="form-control" id="secret"/>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
+        <c:if test="${not empty voting.id}">
+            <form:hidden path="id" value="${voting.id}"/>
+            <form:hidden path="createdDate" value="${voting.createdDate}"/>
+            <form:hidden path="closed" value="${voting.closed}"/>
+        </c:if>
     </div>
     <div class="mainOptions_container">
         <p class="mainOptions_text">Dodaj użytkowników</p>
         <div>Dostępni użytkownicy: <form:select path="users" items="${allUsers}" itemLabel="Name" multiple="true"
-                                               class="form-control" id="users"/></div>
+                                                class="form-control" id="users"/></div>
         <br/>
     </div>
     <div class="mainOptions_container">
-        <div><input type="submit" value="Utwórz głosowanie" class="btn btn-success" id="submitForm"></div>
+        <c:if test="${empty voting.id}">
+            <div><input type="submit" value="Utwórz głosowanie" class="btn btn-success" id="submitForm"></div>
+        </c:if>
+        <c:if test="${not empty voting.id}">
+            <div><input type="submit" value="Zapisz zmiany" class="btn btn-success" id="submitForm"></div>
+        </c:if>
         </form:form>
     </div>
     <br/>
