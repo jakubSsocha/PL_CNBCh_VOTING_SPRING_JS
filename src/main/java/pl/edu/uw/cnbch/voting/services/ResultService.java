@@ -11,4 +11,13 @@ public interface ResultService {
 
     List<Result> getAllResultsForVotingWith(Long id);
 
+    Result findById(Long id) throws Exception;
+
+    void save(Result result);
+
+    void saveUserVoteFor(Result result) throws Exception;
+
+    void checkIfResultIsActive(Long id) throws Exception;
+
+    void checkIfResultBelongToUser(Long resultId) throws Exception;
 }

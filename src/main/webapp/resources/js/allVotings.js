@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
             function createFieldWithDataFor(result) {
                 let NewResultField = document.createElement("div");
                 NewResultField.className = "user_list";
-                NewResultField.innerText = result.user.firstName + " " + result.user.lastName + ", głos: " + result.vote;
+                NewResultField.innerText = result.user.firstName + " " + result.user.lastName + ", głos: " + write(result.vote);
                 return NewResultField;
             }
         }
@@ -74,4 +74,11 @@ function writeTAKorNIE(condition){
     } else if(condition === false){
         return "NIE";
     }
+}
+
+function write(resultVote){
+    if(resultVote === null){
+        return "";
+    }
+        return resultVote;
 }

@@ -6,7 +6,6 @@ import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.repositories.VotingRepository;
 import pl.edu.uw.cnbch.voting.services.VotingService;
 
-import java.rmi.server.ExportException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

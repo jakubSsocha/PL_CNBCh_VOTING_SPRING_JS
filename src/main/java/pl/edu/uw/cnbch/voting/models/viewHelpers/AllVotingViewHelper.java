@@ -1,5 +1,7 @@
 package pl.edu.uw.cnbch.voting.models.viewHelpers;
 
+import pl.edu.uw.cnbch.voting.models.entities.Voting;
+
 public class AllVotingViewHelper {
 
     private Long id;
@@ -39,10 +41,10 @@ public class AllVotingViewHelper {
         this.closed = closed;
     }
 
-    public AllVotingViewHelper(Long id, String name, String test, boolean closed) {
-        this.id = id;
-        this.name = name;
-        this.text = test;
-        this.closed = closed;
+    public AllVotingViewHelper(Voting voting) {
+        this.id = voting.getId();
+        this.name = voting.getName();
+        this.text = voting.getDescription();
+        this.closed = voting.isClosed();
     }
 }

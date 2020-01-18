@@ -83,11 +83,7 @@ public class VotingController {
     private List<AllVotingViewHelper> getVotesIdentifyingDate(){
         List<AllVotingViewHelper> allVotingViewHelper = new ArrayList<>();
         for (Voting v : votingService.getAllVotingsIdTextNameAndClosed()) {
-            allVotingViewHelper.add(new AllVotingViewHelper(
-                    v.getId(),
-                    v.getName(),
-                    v.getDescription(),
-                    v.isClosed()));
+            allVotingViewHelper.add(new AllVotingViewHelper(v));
         }
         return allVotingViewHelper;
     }

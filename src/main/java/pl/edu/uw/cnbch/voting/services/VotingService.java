@@ -3,6 +3,7 @@ package pl.edu.uw.cnbch.voting.services;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
+import pl.edu.uw.cnbch.voting.models.viewHelpers.AllVotingViewHelper;
 
 import java.util.List;
 import java.util.Optional;
