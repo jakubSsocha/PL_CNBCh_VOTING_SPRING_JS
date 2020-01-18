@@ -22,11 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const SUBMIT_FORM_BUTTON = document.getElementById("submitForm");
 
-    let isNameValidationResultPositive = false;
-    let isDescriptionValidationResultPositive = false;
-
-    mustNotBeEmpty(NAME_FORM_INPUT);
-    mustNotBeEmpty(DESCRIPTION_FORM_INPUT);
+    let isNameValidationResultPositive = mustNotBeEmpty(NAME_FORM_INPUT);
+    let isDescriptionValidationResultPositive = mustNotBeEmpty(DESCRIPTION_FORM_INPUT);
 
     function mustNotBeEmpty(fieldName) {
         validate(fieldName);

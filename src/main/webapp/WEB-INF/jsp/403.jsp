@@ -14,7 +14,7 @@
 <body>
 <header>
     <header>
-        <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/headers/nooneLoginHeader.jsp"></jsp:include>
+        <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
     </header>
 </header>
 <div class="container-fluid text-center">

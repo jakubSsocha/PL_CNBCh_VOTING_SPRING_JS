@@ -48,7 +48,7 @@
     </div>
     <div class="mainOptions_container">
         <p class="mainOptions_text">Dodaj użytkowników</p>
-        <div>Dostępni użytkownicy: <form:select path="users" items="${allUsers}" itemLabel="Name" multiple="true"
+        <div>Dostępni użytkownicy: <form:checkboxes path="users" items="${allUsers}" itemLabel="Name"
                                                 class="form-control" id="users"/></div>
         <br/>
     </div>
