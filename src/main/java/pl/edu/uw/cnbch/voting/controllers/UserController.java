@@ -57,10 +57,10 @@ public class UserController {
         return "index.jsp";
     }
 
-    @RequestMapping("/logged")
-    @ResponseBody
-    public String currentUserName(Principal principal) {
-        return principal.getName();
+    @RequestMapping("/user/all")
+    public String goToAllUsers(Model model){
+        return "gogo";
     }
+
 
 }

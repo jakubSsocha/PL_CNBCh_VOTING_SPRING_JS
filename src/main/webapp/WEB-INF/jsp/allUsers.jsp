@@ -17,26 +17,66 @@
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
 </header>
 <div class="col-lg-3"></div>
+
 <div class="col-lg-6">
+    <div style="text-align: center; margin-bottom: 15px">
+        <div class="mainOptions_container">
+            <p class="mainOptions_text">Zarządzanie użytkownikami</p>
+        </div>
+    </div>
     <div class="panel-group" id="accordion">
         <c:forEach items="${allUsers}" var="user" varStatus="theCount">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse${user.id}">
-                            Collapsible Group 1</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse${user.id}" class="buttons"
+                           data-id="${user.id}">
+                            <b>${theCount.index+1}. ${user.name} : ${user.email}</b>
+                        </a>
                     </h4>
                 </div>
                 <div id="collapse${user.id}" class="panel-collapse collapse">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.</div>
+                    <div class="panel-body">
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Opcje:</p>
+                            <c:choose>
+                                <c:when test="${user.enabled = 1}">
+                                    <div style="text-align: center">
+                                        <button class="btn btn-warning" onclick="window.location.href='/user/edit/${user.id}'">Edytuj</button>
+                                        <button class="btn btn-danger" onclick="window.location.href='/user/delete/${user.id}'">Usuń</button>
+                                        <button class="btn btn-danger" onclick="window.location.href='/user/changePassword/${user.id}'">Resetuj Hasło</button>
+                                        <button class="btn btn-primary" onclick="window.location.href='/user/close/${user.id}'">Zmień Rolę</button>
+                                    </div>
+                                </c:when>
+                                <c:when test="${user.enabled = 0}">
+                                    <div style="text-align: center">
+                                        <button class="btn btn-success" onclick="window.location.href='/voting/result/${user.id}'">Aktywuj</button>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                        <div class="additionalOptions_container">
+                            <p class="additionalOptions_text">Informacje ogólne:</p>
+                            <p>Czy głosowanie jest:</p>
+                            <ul>
+                                <li><b>zamknięte: </b><span id="closed${user.id}"></span></li>
+                                <li><b>aktywne: </b><span id="active${user.id}"></span></li>
+                                <li><b>tajne: </b><span id="secret${user.id}"></span></li>
+                            </ul>
+                            <p>Dane podstawowe:</p>
+                            <ul>
+                                <li><b>data utworzenia: </b><span id="createdDate${user.id}"></span></li>
+                                <li><b>data ostatniej modyfikacji: </b><span id="modificationDate${user.id}"></span></li>
+                                <li><b>data zamknięcia: </b><span id="closedDate${user.id}"></span></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </c:forEach>
     </div>
 </div>
+
 <div class="col-lg-3"></div>
 </body>
 </html>
