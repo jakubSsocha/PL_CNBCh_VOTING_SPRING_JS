@@ -1,7 +1,9 @@
 package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.stereotype.Service;
+import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
+import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
 import pl.edu.uw.cnbch.voting.repositories.VotingRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
@@ -114,5 +116,31 @@ public class VotingServiceImpl implements VotingService {
         voting.setClosedDate(now);
         voting.setClosed(true);
         votingRepository.save(voting);
+    }
+
+    @Override
+    public VotingResultDTO generateResultForVoting(Long id) throws Exception {
+        Voting voting = readById(id);
+        int[] result = countResults(voting);
+        return new VotingResultDTO(
+                result[0],
+                result[1],
+                result[2],
+                voting.getResults().size()
+        );
+    }
+
+    private int[] countResults(Voting voting){
+        int[] result = new int[3];
+        for(Result r: voting.getResults()){
+            if(r.getVote().equals("TAK")){
+                result[0] +=1;
+            } else if (r.getVote().equals("NIE")){
+                result[1] +=1;
+            } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")){
+                result[2] +=1;
+            }
+        }
+        return result;
     }
 }

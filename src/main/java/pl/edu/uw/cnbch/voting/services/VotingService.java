@@ -1,6 +1,7 @@
 package pl.edu.uw.cnbch.voting.services;
 
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
+import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface VotingService {
     void delete(Voting voting) throws Exception;
 
     void close(Voting voting) throws Exception;
+
+    VotingResultDTO generateResultForVoting(Long id) throws Exception;
 }

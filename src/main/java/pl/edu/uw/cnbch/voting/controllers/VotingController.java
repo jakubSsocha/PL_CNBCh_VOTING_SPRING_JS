@@ -196,6 +196,7 @@ public class VotingController {
     @RequestMapping("/result/{id}")
     public String goToResultForm(@PathVariable Long id, Model model){
         try{
+            model.addAttribute("votingResult", votingService.generateResultForVoting(id));
             model.addAttribute("voting", votingService.readById(id));
             return "votingResult.jsp";
         } catch (Exception e){
