@@ -192,4 +192,18 @@ public class VotingController {
             return "index.jsp";
         }
     }
+
+    @RequestMapping("/result/{id}")
+    public String goToResultForm(@PathVariable Long id, Model model){
+        try{
+            model.addAttribute("voting", votingService.readById(id));
+            return "votingResult.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+    }
 }
