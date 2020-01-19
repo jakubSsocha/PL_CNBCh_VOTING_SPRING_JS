@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.services.implementations;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
@@ -17,12 +18,14 @@ import java.util.Optional;
 public class VotingServiceImpl implements VotingService {
 
     private final VotingRepository votingRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     private final MainService mainService;
     private final ResultService resultService;
 
-    public VotingServiceImpl(VotingRepository votingRepository, MainService mainService, ResultService resultService) {
+    public VotingServiceImpl(VotingRepository votingRepository, BCryptPasswordEncoder passwordEncoder, MainService mainService, ResultService resultService) {
         this.votingRepository = votingRepository;
+        this.passwordEncoder = passwordEncoder;
         this.mainService = mainService;
         this.resultService = resultService;
     }
@@ -63,7 +66,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     private boolean checkIfExist(String name) {
-        if(votingRepository.findByName(name).isPresent()){
+        if (votingRepository.findByName(name).isPresent()) {
             return true;
         } else {
             return false;
@@ -88,10 +91,9 @@ public class VotingServiceImpl implements VotingService {
     @Override
     public boolean checkIfClosed(Long id) throws Exception {
         Voting voting = readById(id);
-        if(voting.isClosed()){
+        if (voting.isClosed()) {
             throw new Exception("Głosowanie zamknięte - nie można go modyfikować");
-        }
-        else return false;
+        } else return false;
     }
 
     @Override
@@ -110,7 +112,7 @@ public class VotingServiceImpl implements VotingService {
         checkIfClosed(voting.getId());
         Voting oldSettings = readByName(voting.getName());
         LocalDateTime now = LocalDateTime.now();
-        resultService.selAllResultsClosedForVotingId(voting.getId(),now);
+        resultService.selAllResultsClosedForVotingId(voting.getId(), now);
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(now);
         voting.setClosedDate(now);
@@ -130,19 +132,34 @@ public class VotingServiceImpl implements VotingService {
         );
     }
 
-    private int[] countResults(Voting voting){
+    private int[] countResults(Voting voting) {
         int[] result = new int[3];
-        for(Result r: voting.getResults()){
-            if(r.getVote() == null){
-                continue;
-            } else if(r.getVote().equals("TAK")){
-                result[0] +=1;
-            } else if (r.getVote().equals("NIE")){
-                result[1] +=1;
-            } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")){
-                result[2] +=1;
+        if (voting.isSecret()) {
+            for (Result r : voting.getResults()) {
+                if (r.getVote() == null) {
+                    continue;
+                } else if (passwordEncoder.matches("TAK",r.getVote())) {
+                    result[0] += 1;
+                } else if (passwordEncoder.matches("NIE",r.getVote())) {
+                    result[1] += 1;
+                } else if (passwordEncoder.matches("WSTRZYMUJĘ SIĘ",r.getVote())) {
+                    result[2] += 1;
+                }
             }
+            return result;
+        } else {
+            for (Result r : voting.getResults()) {
+                if (r.getVote() == null) {
+                    continue;
+                } else if (r.getVote().equals("TAK")) {
+                    result[0] += 1;
+                } else if (r.getVote().equals("NIE")) {
+                    result[1] += 1;
+                } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")) {
+                    result[2] += 1;
+                }
+            }
+            return result;
         }
-        return result;
     }
 }

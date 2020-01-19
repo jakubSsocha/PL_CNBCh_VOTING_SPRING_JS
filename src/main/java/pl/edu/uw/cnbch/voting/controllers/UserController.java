@@ -30,18 +30,14 @@ public class UserController {
 
     @PostMapping("/user/add")
     public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model) {
-
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", MessageHelper.generateMessage(
                     "Nie udało się utworzyć użytkownika",
                     "error"));
             return "index.jsp";
         }
-
         try {
-
             userService.saveUser(user);
-
         } catch (DataIntegrityViolationException e) {
 
             model.addAttribute("message", MessageHelper.generateMessage(

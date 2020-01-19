@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.User;
@@ -20,12 +21,13 @@ import java.util.Optional;
 public class ResultServiceImpl implements ResultService {
 
     private final ResultRepository resultRepository;
-
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public ResultServiceImpl(ResultRepository resultRepository, UserRepository userRepository) {
+    public ResultServiceImpl(ResultRepository resultRepository, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.resultRepository = resultRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -89,6 +91,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public void saveUserVoteFor(Result result) throws Exception {
         Result voteResult = getAllGeneralInformationFor(result);
+        if(result.getVoting().isSecret()){
+            voteResult = encodeResultVote(voteResult);
+        }
         voteResult.setClosed(true);
         voteResult.setUserVotedDate(LocalDateTime.now());
         save(voteResult);
@@ -147,4 +152,17 @@ public class ResultServiceImpl implements ResultService {
         resultRepository.save(result);
     }
 
+    @Override
+    public void encodeAllResultsForVotingId(Long id) throws Exception {
+        List<Result> resultList = resultRepository.findAllByVotingId(id);
+        for(Result r : resultList){
+            r = encodeResultVote(r);
+            save(r);
+        }
+    }
+
+    private Result encodeResultVote(Result result){
+        result.setVote(passwordEncoder.encode(result.getVote()));
+        return result;
+    }
 }

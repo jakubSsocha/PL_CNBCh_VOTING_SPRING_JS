@@ -66,7 +66,19 @@
                     <tr>
                         <td>${theCount.index+1}</td>
                         <td>${result.user.name}</td>
-                        <td>${result.vote}</td>
+                        <c:choose>
+                            <c:when test="${voting.secret eq true}">
+                                <c:if test="${not empty result.vote}">
+                                    <td>Głos oddany</td>
+                                </c:if>
+                                <c:if test="${empty result.vote}">
+                                    <td></td>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <td>${result.vote}</td>
+                            </c:otherwise>
+                        </c:choose>
                         <td>${result.userVotedDate.format( DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"))}</td>
                     </tr>
                 </c:forEach>
