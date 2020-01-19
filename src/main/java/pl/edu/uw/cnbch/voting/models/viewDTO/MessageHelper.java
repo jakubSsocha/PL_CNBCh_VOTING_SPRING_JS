@@ -1,4 +1,4 @@
-package pl.edu.uw.cnbch.voting.models.viewHelpers;
+package pl.edu.uw.cnbch.voting.models.viewDTO;
 
 public class MessageHelper {
 

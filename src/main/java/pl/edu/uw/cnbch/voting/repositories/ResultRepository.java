@@ -22,4 +22,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
     @Query("select r from Result r where r.id = :resultId and r.user.id = :userId")
     Optional<Result> checkIfResultBelongToUser(@Param("resultId") Long resultId,
                                                @Param("userId") Long userId);
+
+    @Query("select r from Result r where r.voting.id = :votingId")
+    List<Result> findAllByVotingId (@Param("votingId") Long id);
 }

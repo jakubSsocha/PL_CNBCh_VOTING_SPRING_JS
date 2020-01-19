@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
         this.roleRepository = roleRepository;
     }
 
+    //potrzebne do SpringSecurity
     @Override
     public User findByUserName(String username) {
         return userRepository.findByUsername(username);

@@ -12,7 +12,6 @@ import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +29,14 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void createEmptyResultsForAllUsersOf(Voting voting) {
+    public void createActiveResultsForAllUsersOf(Voting voting) {
         LocalDateTime currentTime = LocalDateTime.now();
         for (User user : voting.getUsers()) {
-            ifResultDoesntExistsSaveInDatabase(newEmptyResultFor(voting, user, currentTime));
+            ifResultDoesntExistsSaveInDatabase(newResultFor(voting, user, currentTime));
         }
     }
 
-    private Result newEmptyResultFor(Voting voting, User user, LocalDateTime time) {
+    private Result newResultFor(Voting voting, User user, LocalDateTime time) {
         Result result = new Result();
         result.setVoting(voting);
         result.setUser(user);
@@ -45,16 +44,18 @@ public class ResultServiceImpl implements ResultService {
         result.setCreatedDate(time);
         result.setClosed(false);
         return result;
-
     }
 
     private void ifResultDoesntExistsSaveInDatabase(Result result) {
         Optional<Result> ResultFromDatabase = resultRepository.findByVotingAndUser(result.getVoting(), result.getUser());
-        if (ResultFromDatabase.isPresent()) {
+        if (ResultFromDatabase.isPresent() && ResultFromDatabase.get().isActive()==false) {
+            Result oldResult = ResultFromDatabase.get();
+            oldResult.setActive(true);
+            result = oldResult;
+        } else if(ResultFromDatabase.isPresent()) {
             throw new DataIntegrityViolationException("Rezultat dla podanego głosowania i użytkownika już istniej");
-        } else {
-            resultRepository.save(result);
         }
+        resultRepository.save(result);
     }
 
     @Override
@@ -122,4 +123,28 @@ public class ResultServiceImpl implements ResultService {
             throw new Exception("Błąd bazy danych");
         }
     }
+
+    @Override
+    public void setAllResultsInactiveForVotingId(Long id) throws Exception {
+        List<Result> resultList = resultRepository.findAllByVotingId(id);
+        for(Result r : resultList){
+            r.setActive(false);
+            resultRepository.save(r);
+        }
+    }
+
+    @Override
+    public void selAllResultsClosedForVotingId(Long id, LocalDateTime now) throws Exception {
+        List<Result> resultList = resultRepository.findAllByVotingId(id);
+        for(Result r : resultList){
+            closeResult(r, now);
+        }
+    }
+
+    private void closeResult(Result result, LocalDateTime time){
+        result.setClosed(true);
+        result.setClosedDate(time);
+        resultRepository.save(result);
+    }
+
 }

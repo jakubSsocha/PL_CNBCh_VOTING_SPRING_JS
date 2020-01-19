@@ -1,8 +1,8 @@
-package pl.edu.uw.cnbch.voting.models.viewHelpers;
+package pl.edu.uw.cnbch.voting.models.viewDTO;
 
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 
-public class AllVotingViewHelper {
+public class AllVotingDTO {
 
     private Long id;
     private String name;
@@ -41,7 +41,7 @@ public class AllVotingViewHelper {
         this.closed = closed;
     }
 
-    public AllVotingViewHelper(Voting voting) {
+    public AllVotingDTO(Voting voting) {
         this.id = voting.getId();
         this.name = voting.getName();
         this.text = voting.getDescription();

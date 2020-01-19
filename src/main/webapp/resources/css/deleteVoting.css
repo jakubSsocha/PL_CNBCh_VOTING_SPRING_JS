@@ -1,0 +1,52 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {height: 450px}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+
+    .row.content {
+        height: auto;
+    }
+}
+
+a{
+    color: black;
+}
+
+input{
+    text-align: center;
+}
+
+.col-lg-6{
+    text-align: center;
+}
+
+.mainOptions_container{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    border-color: rgba(217, 30, 24, 0.7);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainOptions_text{
+    margin-top: 15px;
+    margin-bottom: 40px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.form-control{
+    margin-bottom: 15px;
+}
+
+

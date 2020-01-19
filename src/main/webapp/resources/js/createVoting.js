@@ -22,12 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const SUBMIT_FORM_BUTTON = document.getElementById("submitForm");
 
-    let isNameValidationResultPositive = mustNotBeEmpty(NAME_FORM_INPUT);
-    let isDescriptionValidationResultPositive = mustNotBeEmpty(DESCRIPTION_FORM_INPUT);
-
-    function mustNotBeEmpty(fieldName) {
-        validate(fieldName);
-    }
+    let isNameValidationResultPositive = validate(NAME_FORM_INPUT);
+    let isDescriptionValidationResultPositive = validate(DESCRIPTION_FORM_INPUT);
 
     NAME_FORM_INPUT.htmlHandler.addEventListener("keyup", function () {
         isNameValidationResultPositive = validate(NAME_FORM_INPUT);

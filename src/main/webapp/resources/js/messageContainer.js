@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    let handlerFadeOutTime = 5000;
+    let handlerFadeOutTime = 10000;
 
     setTimeout(function() {
         $("#messageHandler").fadeOut().empty();

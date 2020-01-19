@@ -14,9 +14,11 @@ public interface VotingRepository extends JpaRepository<Voting, Long> {
 
     Optional<Voting> findByName(String name);
 
-    @Query("select v from Voting v order by v.closed desc, v.createdDate desc")
-    List<Voting> selectAllVotingBasicInfoOrdered();
+    Optional<Voting> findById(Long id);
+
+    @Query("select v from Voting v where v.active = true order by v.closed desc, v.createdDate desc")
+    List<Voting> selectAllActiveVotingOrdered();
 
     @Query("select v.id, v.description, v.createdDate, v.closed, v.closedDate, v.active from Voting v where v.id = :id")
-    List<Voting> findVotingByID(@Param("id") Long id);
+    Voting findBasicVotingInfoByID(@Param("id") Long id);
 }

@@ -1,14 +1,14 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
-import pl.edu.uw.cnbch.voting.models.viewHelpers.MessageHelper;
-import pl.edu.uw.cnbch.voting.models.viewHelpers.AllVotingViewHelper;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
+import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
+import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 import pl.edu.uw.cnbch.voting.services.VotingService;
@@ -16,7 +16,6 @@ import pl.edu.uw.cnbch.voting.services.VotingService;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/voting")
@@ -25,11 +24,13 @@ public class VotingController {
     private final VotingService votingService;
     private final ResultService resultService;
     private final UserService userService;
+    private final MainService mainService;
 
-    public VotingController(VotingService votingService, ResultService resultService, UserService userService) {
+    public VotingController(VotingService votingService, ResultService resultService, UserService userService, MainService mainService) {
         this.votingService = votingService;
         this.resultService = resultService;
         this.userService = userService;
+        this.mainService = mainService;
     }
 
     @ModelAttribute("allUsers")
@@ -45,27 +46,16 @@ public class VotingController {
 
     @PostMapping("/add")
     public String addNewVotingAndEmptyUsersResults(@Valid Voting voting, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("message", MessageHelper.generateMessage(
-                    "Przynajmniej jedno pole zawiera nieprawidłowe dane - spróbuj ponownie",
-                    "error"));
-            return "createVoting.jsp";
-        }
         try {
-            votingService.createNew(voting);
-            Optional<Voting> VotingFromDatabase = votingService.findVotingByName(voting.getName());
-            if (VotingFromDatabase.isPresent()) {
-                resultService.createEmptyResultsForAllUsersOf(VotingFromDatabase.get());
-            } else {
-                model.addAttribute("message", MessageHelper.generateMessage(
-                        "Nie udało się znaleźć tego głosowania w bazie danych - skontaktuj się z administratorem",
-                        "error"));
-                return "index.jsp";
-            }
-        } catch (DataIntegrityViolationException dive) {
+            mainService.checkForErrorsIn(bindingResult);
+            votingService.create(voting);
+            Voting VotingFromDatabase = votingService.readByName(voting.getName());
+            resultService.createActiveResultsForAllUsersOf(VotingFromDatabase);
+        } catch (Exception e) {
             model.addAttribute("message", MessageHelper.generateMessage(
-                    dive.getMessage(),
-                    "error"));
+                    e.getMessage(),
+                    "error"
+            ));
             return "index.jsp";
         }
         model.addAttribute("message", MessageHelper.generateMessage(
@@ -75,52 +65,131 @@ public class VotingController {
     }
 
     @GetMapping("/all")
-    public String getAllVotingBasicInfo(Model model) {
-        model.addAttribute("allVotings", getVotesIdentifyingDate());
+    public String goToAllVotingView(Model model) {
+        model.addAttribute("allVotings", getVotingIDdate());
         return "allVotings.jsp";
     }
 
-    private List<AllVotingViewHelper> getVotesIdentifyingDate(){
-        List<AllVotingViewHelper> allVotingViewHelper = new ArrayList<>();
-        for (Voting v : votingService.getAllVotingsIdTextNameAndClosed()) {
-            allVotingViewHelper.add(new AllVotingViewHelper(v));
+    private List<AllVotingDTO> getVotingIDdate() {
+        List<AllVotingDTO> allVotingDTO = new ArrayList<>();
+        for (Voting v : votingService.getAllActiveVotingData()) {
+            allVotingDTO.add(new AllVotingDTO(v));
         }
-        return allVotingViewHelper;
+        return allVotingDTO;
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Voting returnAllVotingData(@PathVariable Long id){
-        return votingService.findVotingByID(id).get();
+    public Voting returnAllDataForVotingId(@PathVariable Long id) {
+        try {
+            return votingService.readById(id);
+        } catch (Exception e) {
+        }
+        return new Voting();
     }
 
     @GetMapping("/edit/{id}")
-    public String goToEditForm(@PathVariable Long id, Model model){
-        model.addAttribute("voting", votingService.findVotingByID(id).get());
-        return "createVoting.jsp";
+    public String goToEditForm(@PathVariable Long id, Model model) {
+        try {
+            model.addAttribute("voting", votingService.readById(id));
+            return "createVoting.jsp";
+        } catch (Exception e) {
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
     }
 
     @PostMapping("/edit/{id}")
     public String editVotingData(@Valid Voting voting,
                                  BindingResult bindingResult,
-                                 Model model,
-                                 @PathVariable Long id){
+                                 Model model) {
         try {
-            if(bindingResult.hasErrors()){
-                model.addAttribute("message", MessageHelper.generateMessage(
-                        "Przynajmniej jeden z parametrów niepoprawny. Wprowadź nowe dane i spróbuj ponownie",
-                        "error"
-                ));
-                return "redirect:/";
-            }
+            mainService.checkForErrorsIn(bindingResult);
             votingService.edit(voting);
+        } catch (Exception e) {
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+        model.addAttribute("message", MessageHelper.generateMessage(
+                "Głosowanie poprawnie zmodyfikowane",
+                "success"));
+        return "index.jsp";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String goToDeleteForm(@PathVariable Long id, Model model) {
+        try {
+            votingService.checkIfClosed(id);
+            model.addAttribute("voting", votingService.readById(id));
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Usuwasz głosowanie - ta operacja jest nieodwracalna!",
+                    "error"
+            ));
+            return "deleteVoting.jsp";
+        } catch (Exception e) {
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteVoting(@ModelAttribute Voting voting, Model model) {
+        try {
+            votingService.delete(voting);
+        } catch (Exception e) {
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+        return "index.jsp";
+    }
+
+    @GetMapping("/close/{id}")
+    public String goToCloseForm(@PathVariable Long id, Model model){
+        try {
+            votingService.checkIfClosed(id);
+            model.addAttribute("voting", votingService.readById(id));
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Zamykasz głosowanie - ta operacja jest nieodwracalna!",
+                    "error"
+            ));
+            return "closeVoting.jsp";
         } catch (Exception e){
             model.addAttribute("message", MessageHelper.generateMessage(
                     e.getMessage(),
                     "error"
             ));
-            return "redirect:/";
+            return "index.jsp";
         }
-        return "redirect:/voting/all";
+    }
+
+    @PostMapping("/close/{id}")
+    public String closeVoting(@ModelAttribute Voting voting, Model model){
+        try{
+            votingService.checkIfClosed(voting.getId());
+            votingService.close(voting);
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    "Głosowanie zostało zakończone!",
+                    "success"
+            ));
+            return "index.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageHelper.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
-import pl.edu.uw.cnbch.voting.models.viewHelpers.MessageHelper;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
 import javax.validation.Valid;

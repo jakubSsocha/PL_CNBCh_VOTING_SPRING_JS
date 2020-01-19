@@ -1,23 +1,24 @@
 package pl.edu.uw.cnbch.voting.services;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
-import pl.edu.uw.cnbch.voting.models.viewHelpers.AllVotingViewHelper;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface VotingService {
 
-    void createNew(Voting voting);
+    void create(Voting voting) throws Exception;
 
-    Optional<Voting> findVotingByName(String string);
+    Voting readById(Long id) throws Exception;
 
-    List<Voting> getAllVotingsIdTextNameAndClosed();
+    Voting readByName(String name) throws Exception;
 
-    @Query("select v.id, v.description, v.createdDate, v.closed, v.closedDate, v.active from Voting v where v.id = :id")
-    Optional<Voting> findVotingByID(@Param("id") Long id);
+    List<Voting> getAllActiveVotingData();
 
     void edit(Voting voting) throws Exception;
+
+    boolean checkIfClosed(Long id) throws Exception;
+
+    void delete(Voting voting) throws Exception;
+
+    void close(Voting voting) throws Exception;
 }
