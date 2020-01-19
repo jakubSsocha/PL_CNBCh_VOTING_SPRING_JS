@@ -133,7 +133,9 @@ public class VotingServiceImpl implements VotingService {
     private int[] countResults(Voting voting){
         int[] result = new int[3];
         for(Result r: voting.getResults()){
-            if(r.getVote().equals("TAK")){
+            if(r.getVote() == null){
+                continue;
+            } else if(r.getVote().equals("TAK")){
                 result[0] +=1;
             } else if (r.getVote().equals("NIE")){
                 result[1] +=1;

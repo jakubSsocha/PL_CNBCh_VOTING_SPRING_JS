@@ -67,7 +67,7 @@
                         <td>${theCount.index+1}</td>
                         <td>${result.user.name}</td>
                         <td>${result.vote}</td>
-                        <td>${result.userVotedDate}</td>
+                        <td>${result.userVotedDate.format( DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"))}</td>
                     </tr>
                 </c:forEach>
             </table>
