@@ -37,6 +37,7 @@
         <form:hidden path="id" value="${voting.id}"/>
         <form:hidden path="closed" value="${voting.closed}"/>
         <form:hidden path="active" value="${voting.active}"/>
+        <form:hidden path="secret" value="${voting.secret}"/>
     </div>
     <div class="mainOptions_container">
         <p class="mainOptions_text">Użytkownicy</p>

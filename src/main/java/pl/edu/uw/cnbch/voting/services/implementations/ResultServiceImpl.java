@@ -161,8 +161,10 @@ public class ResultServiceImpl implements ResultService {
         }
     }
 
-    private Result encodeResultVote(Result result){
-        result.setVote(passwordEncoder.encode(result.getVote()));
+    private Result encodeResultVote(Result result) {
+        if (result.getVote() != null) {
+            result.setVote(passwordEncoder.encode(result.getVote()));
+        }
         return result;
     }
 }

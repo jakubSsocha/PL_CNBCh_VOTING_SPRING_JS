@@ -43,6 +43,7 @@
         <c:if test="${not empty voting.id}">
             <form:hidden path="id" value="${voting.id}"/>
             <form:hidden path="closed" value="${voting.closed}"/>
+            <form:hidden path="secret" value="${voting.secret}"/>
         </c:if>
     </div>
     <div class="mainOptions_container">

@@ -84,6 +84,9 @@ public class VotingServiceImpl implements VotingService {
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
         votingRepository.save(voting);
+        if(!oldSettings.isSecret() && voting.isSecret()){
+            resultService.encodeAllResultsForVotingId(voting.getId());
+        }
         resultService.setAllResultsInactiveForVotingId(voting.getId());
         resultService.createActiveResultsForAllUsersOf(voting);
     }
