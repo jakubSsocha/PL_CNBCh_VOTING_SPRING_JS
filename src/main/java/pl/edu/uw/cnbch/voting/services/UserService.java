@@ -11,4 +11,6 @@ public interface UserService {
     void saveUser(User user);
 
     List<User> findAllActiveUsers();
+
+    void saveUserNewPassword(User user);
 }

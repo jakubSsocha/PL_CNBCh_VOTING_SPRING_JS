@@ -10,7 +10,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="#">Zmień hasło</a></li>
+        <li><a href="/password/setNew">Zmień hasło</a></li>
         <li><a href="#">Głosuj</a></li>
         <li><a href="#">Wyniki Głosowań</a></li>
         <li><a href="#" onclick="document.getElementById('logout_form').submit(); return false;">

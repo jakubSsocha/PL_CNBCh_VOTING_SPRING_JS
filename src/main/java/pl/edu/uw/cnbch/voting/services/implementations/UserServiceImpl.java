@@ -45,6 +45,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUserNewPassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
     public List<User> findAllActiveUsers() {
         return userRepository.findAll();
     }

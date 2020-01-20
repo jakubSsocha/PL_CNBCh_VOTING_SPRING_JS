@@ -24,7 +24,10 @@ public class VotingController {
     private final UserService userService;
     private final MainService mainService;
 
-    public VotingController(VotingService votingService, ResultService resultService, UserService userService, MainService mainService) {
+    public VotingController(VotingService votingService,
+                            ResultService resultService,
+                            UserService userService,
+                            MainService mainService) {
         this.votingService = votingService;
         this.resultService = resultService;
         this.userService = userService;

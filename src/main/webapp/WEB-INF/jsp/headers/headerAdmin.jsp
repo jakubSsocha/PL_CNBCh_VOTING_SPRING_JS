@@ -10,7 +10,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="#">Zmień hasło</a></li>
+        <li><a href="/password/setNew">Zmień hasło</a></li>
         <sec:authorize access="hasRole('USER')">
         <li><a href="#">Głosuj</a></li>
         </sec:authorize>

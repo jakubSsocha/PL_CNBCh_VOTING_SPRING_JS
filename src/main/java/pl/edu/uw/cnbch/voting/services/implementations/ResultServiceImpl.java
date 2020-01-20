@@ -1,9 +1,6 @@
 package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
@@ -11,6 +8,7 @@ import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
+import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
 import java.time.LocalDateTime;
@@ -23,11 +21,16 @@ public class ResultServiceImpl implements ResultService {
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final MainService mainService;
 
-    public ResultServiceImpl(ResultRepository resultRepository, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public ResultServiceImpl(ResultRepository resultRepository,
+                             UserRepository userRepository,
+                             BCryptPasswordEncoder passwordEncoder,
+                             MainService mainService) {
         this.resultRepository = resultRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mainService = mainService;
     }
 
     @Override
@@ -111,21 +114,10 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public void checkIfResultBelongToUser(Long resultId) throws Exception {
-        Long user = getLoggedUserId();
-        Optional<Result> result = resultRepository.checkIfResultBelongToUser(resultId, user);
+        Long userId = mainService.getLoggedUser().getId();
+        Optional<Result> result = resultRepository.checkIfResultBelongToUser(resultId, userId);
         if(!result.isPresent()){
             throw new Exception("Odmowa dostępu");
-        }
-    }
-
-    private Long getLoggedUserId() throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            User user = userRepository.findByUsername(currentUserName);
-            return user.getId();
-        } else {
-            throw new Exception("Błąd bazy danych");
         }
     }
 
