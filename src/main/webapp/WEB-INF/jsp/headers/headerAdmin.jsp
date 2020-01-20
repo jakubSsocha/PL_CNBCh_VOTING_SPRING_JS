@@ -12,7 +12,7 @@
         <li class="active"><a href="/">Home</a></li>
         <li><a href="/password/setNew">Zmień hasło</a></li>
         <sec:authorize access="hasRole('USER')">
-        <li><a href="#">Głosuj</a></li>
+        <li><a href="/user/votings">Głosuj</a></li>
         </sec:authorize>
         <li><a href="#">Zarządzanie Użytkownikami</a></li>
         <li><a href="/voting/all">Zarządzanie Głosowaniami</a></li>

@@ -27,4 +27,6 @@ public interface ResultService {
     void selAllResultsClosedForVotingId(Long id, LocalDateTime localDateTime) throws Exception;
 
     void encodeAllResultsForVotingId(Long id) throws Exception;
+
+    List<Result> getAllEmptyResultsForUser() throws Exception;
 }

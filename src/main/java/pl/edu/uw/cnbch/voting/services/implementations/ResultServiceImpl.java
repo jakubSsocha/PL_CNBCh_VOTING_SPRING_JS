@@ -159,4 +159,9 @@ public class ResultServiceImpl implements ResultService {
         }
         return result;
     }
+
+    @Override
+    public List<Result> getAllEmptyResultsForUser() throws Exception {
+        return resultRepository.findAllEmptyUserResults(mainService.getLoggedUser().getId());
+    }
 }

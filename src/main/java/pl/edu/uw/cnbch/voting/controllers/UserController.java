@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
+import pl.edu.uw.cnbch.voting.services.MainService;
+import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import javax.validation.Valid;
@@ -17,9 +19,15 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final ResultService resultService;
+    private final MainService mainService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          ResultService resultService,
+                          MainService mainService) {
         this.userService = userService;
+        this.resultService = resultService;
+        this.mainService = mainService;
     }
 
     @GetMapping("/user/add")
@@ -52,9 +60,22 @@ public class UserController {
     }
 
     @RequestMapping("/user/all")
-    public String goToAllUsers(Model model){
+    public String goToAllUsers(Model model) {
         return "gogo";
     }
 
+    @RequestMapping("/user/votings")
+    public String goToAllUserActiveVoting(Model model) {
+        try {
+            model.addAttribute("results", resultService.getAllEmptyResultsForUser());
+        } catch (Exception e) {
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+        return "userVotings.jsp";
+    }
 
 }

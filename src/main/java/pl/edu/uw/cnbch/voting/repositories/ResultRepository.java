@@ -25,4 +25,8 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     @Query("select r from Result r where r.voting.id = :votingId")
     List<Result> findAllByVotingId (@Param("votingId") Long id);
+
+    @Query("select r from Result r where r.user.id = :userId and r.vote is null and r.active=true " +
+            "and r.closed=false and r.voting.active = true and r.voting.closed = false")
+    List<Result> findAllEmptyUserResults (@Param("userId") Long id);
 }
