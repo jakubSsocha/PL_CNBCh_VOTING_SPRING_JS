@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
-import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
@@ -43,7 +43,7 @@ public class ResultController {
             resultService.checkIfResultIsActive(id);
             model.addAttribute("result", resultService.findById(id));
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -58,13 +58,13 @@ public class ResultController {
             mainService.checkForErrorsIn(bindingResult);
             resultService.saveUserVoteFor(result);
         } catch (Exception e){
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
             return "index.jsp";
         }
-        model.addAttribute("message", MessageHelper.generateMessage(
+        model.addAttribute("message", MessageDTO.generateMessage(
                 "Głos oddany pomyślnie",
                 "success"
         ));

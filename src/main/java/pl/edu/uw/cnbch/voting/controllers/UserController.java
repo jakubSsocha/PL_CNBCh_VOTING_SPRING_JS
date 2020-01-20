@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.edu.uw.cnbch.voting.models.entities.User;
-import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import javax.validation.Valid;
@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/user/add")
     public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     "Nie udało się utworzyć użytkownika",
                     "error"));
             return "index.jsp";
@@ -40,12 +40,12 @@ public class UserController {
             userService.saveUser(user);
         } catch (DataIntegrityViolationException e) {
 
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     "Użytkownik o podanym adresie e-mail:<br />" + user.getEmail() + "<br /> jest już zarejestrowany w bazie danych",
                     "error"));
             return "index.jsp";
         }
-        model.addAttribute("message", MessageHelper.generateMessage(
+        model.addAttribute("message", MessageDTO.generateMessage(
                 "Użytkownik utworzony pomyślnie",
                 "success"));
         return "index.jsp";

@@ -1,9 +1,9 @@
 package pl.edu.uw.cnbch.voting.models.viewDTO;
 
-public class MessageHelper {
+public class MessageDTO {
 
-    public static MessageHelper generateMessage(String text, String type){
-        return new MessageHelper(text, type);
+    public static MessageDTO generateMessage(String text, String type){
+        return new MessageDTO(text, type);
     }
 
     private String text;
@@ -25,7 +25,7 @@ public class MessageHelper {
         this.type = type;
     }
 
-    private MessageHelper(String text, String type) {
+    private MessageDTO(String text, String type) {
         this.text = text;
         this.type = type;
     }

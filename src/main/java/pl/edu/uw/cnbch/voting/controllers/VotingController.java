@@ -6,15 +6,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
-import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
-import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 import pl.edu.uw.cnbch.voting.services.VotingService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -52,13 +50,13 @@ public class VotingController {
             Voting VotingFromDatabase = votingService.readByName(voting.getName());
             resultService.createActiveResultsForAllUsersOf(VotingFromDatabase);
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
             return "index.jsp";
         }
-        model.addAttribute("message", MessageHelper.generateMessage(
+        model.addAttribute("message", MessageDTO.generateMessage(
                 "Utworzono głosowanie i puste głosy dla wskazanych użytkowników",
                 "success"));
         return "index.jsp";
@@ -89,7 +87,7 @@ public class VotingController {
             model.addAttribute("voting", votingService.readById(id));
             return "createVoting.jsp";
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -105,13 +103,13 @@ public class VotingController {
             mainService.checkForErrorsIn(bindingResult);
             votingService.edit(voting);
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
             return "index.jsp";
         }
-        model.addAttribute("message", MessageHelper.generateMessage(
+        model.addAttribute("message", MessageDTO.generateMessage(
                 "Głosowanie poprawnie zmodyfikowane",
                 "success"));
         return "index.jsp";
@@ -123,13 +121,13 @@ public class VotingController {
             votingService.checkIfClosed(id);
             votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     "Usuwasz głosowanie - ta operacja jest nieodwracalna!",
                     "error"
             ));
             return "deleteVoting.jsp";
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -142,7 +140,7 @@ public class VotingController {
         try {
             votingService.delete(voting);
         } catch (Exception e) {
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -157,13 +155,13 @@ public class VotingController {
             votingService.checkIfClosed(id);
             votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     "Zamykasz głosowanie - ta operacja jest nieodwracalna!",
                     "error"
             ));
             return "closeVoting.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -176,13 +174,13 @@ public class VotingController {
         try{
             votingService.checkIfClosed(voting.getId());
             votingService.close(voting);
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     "Głosowanie zostało zakończone!",
                     "success"
             ));
             return "index.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
@@ -198,7 +196,7 @@ public class VotingController {
             model.addAttribute("voting", votingService.readById(id));
             return "votingResult.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageHelper.generateMessage(
+            model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
                     "error"
             ));
