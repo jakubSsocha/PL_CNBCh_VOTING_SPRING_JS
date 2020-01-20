@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageHelper;
+import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
 import javax.validation.Valid;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ResultController {
 
     private final ResultService resultService;
+    private final MainService mainService;
 
-    public ResultController(ResultService resultService) {
+    public ResultController(ResultService resultService, MainService mainService) {
         this.resultService = resultService;
+        this.mainService = mainService;
     }
 
     @ModelAttribute("votingResults")
@@ -52,7 +55,7 @@ public class ResultController {
     @PostMapping("/vote/{id}")
     public String createVotingResult(@Valid Result result, BindingResult bindingResult, Model model){
         try{
-            noErrorsIn(bindingResult);
+            mainService.checkForErrorsIn(bindingResult);
             resultService.saveUserVoteFor(result);
         } catch (Exception e){
             model.addAttribute("message", MessageHelper.generateMessage(
@@ -66,12 +69,6 @@ public class ResultController {
                 "success"
         ));
         return "index.jsp";
-    }
-
-    private void noErrorsIn(BindingResult bindingResult) throws Exception{
-        if(bindingResult.hasErrors()){
-            throw new Exception("Nie udało sie oddać głosu");
-        }
     }
 
 }
