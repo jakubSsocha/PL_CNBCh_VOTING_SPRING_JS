@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.services;
 
+import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
@@ -29,4 +30,6 @@ public interface VotingService {
     VotingResultDTO generateResultForVoting(Long id) throws Exception;
 
     List<AllVotingDTO> getAllVotingIdData();
+
+    List<Voting> getAllUserClosedVoting() throws Exception;
 }

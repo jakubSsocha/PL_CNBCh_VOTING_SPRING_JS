@@ -12,6 +12,7 @@ import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
+import pl.edu.uw.cnbch.voting.services.VotingService;
 
 import javax.validation.Valid;
 
@@ -20,13 +21,16 @@ public class UserController {
 
     private final UserService userService;
     private final ResultService resultService;
+    private final VotingService votingService;
     private final MainService mainService;
 
     public UserController(UserService userService,
                           ResultService resultService,
+                          VotingService votingService,
                           MainService mainService) {
         this.userService = userService;
         this.resultService = resultService;
+        this.votingService = votingService;
         this.mainService = mainService;
     }
 
@@ -76,6 +80,19 @@ public class UserController {
             return "index.jsp";
         }
         return "userVotings.jsp";
+    }
+
+    @RequestMapping("/user/results")
+    public String goToVotingResults(Model model){
+        try{
+            model.addAttribute("votings", votingService.getAllUserClosedVoting());
+        } catch (Exception e){
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+        }
+        return "userResults.jsp";
     }
 
 }

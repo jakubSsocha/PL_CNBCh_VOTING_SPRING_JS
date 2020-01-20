@@ -52,6 +52,7 @@ public class ResultController {
         return "vote.jsp";
     }
 
+    //TODO - it's still possible to vote with empty voice
     @PostMapping("/vote/{id}")
     public String createVotingResult(@Valid Result result, BindingResult bindingResult, Model model){
         try{

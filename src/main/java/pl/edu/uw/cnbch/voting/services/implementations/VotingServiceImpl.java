@@ -3,6 +3,7 @@ package pl.edu.uw.cnbch.voting.services.implementations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
+import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
@@ -184,5 +185,11 @@ public class VotingServiceImpl implements VotingService {
             }
             return result;
         }
+    }
+
+    @Override
+    public List<Voting> getAllUserClosedVoting() throws Exception {
+        User user = mainService.getLoggedUser();
+        return votingRepository.findAllUserActiveClosedVoting(user);
     }
 }
