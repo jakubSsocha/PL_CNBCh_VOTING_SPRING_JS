@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
+import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
 import pl.edu.uw.cnbch.voting.repositories.VotingRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
@@ -11,6 +12,7 @@ import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.VotingService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +76,15 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
+    public List<AllVotingDTO> getAllVotingIdData() {
+        List<AllVotingDTO> allVotingDTO = new ArrayList<>();
+        for (Voting v : getAllActiveVotingData()) {
+            allVotingDTO.add(new AllVotingDTO(v));
+        }
+        return allVotingDTO;
+    }
+
+    @Override
     public List<Voting> getAllActiveVotingData() {
         return votingRepository.selectAllActiveVotingOrdered();
     }
@@ -85,7 +96,7 @@ public class VotingServiceImpl implements VotingService {
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
         votingRepository.save(voting);
-        if(!wasSecret && voting.isSecret()){
+        if (!wasSecret && voting.isSecret()) {
             resultService.encodeAllResultsForVotingId(voting.getId());
         }
         resultService.setAllResultsInactiveForVotingId(voting.getId());
@@ -98,6 +109,14 @@ public class VotingServiceImpl implements VotingService {
         if (voting.isClosed()) {
             throw new Exception("Głosowanie zamknięte - nie można go modyfikować");
         } else return false;
+    }
+
+    @Override
+    public boolean checkIfActive(Long id) throws Exception {
+        Voting voting = readById(id);
+        if (!voting.isActive()) {
+            throw new Exception("Głosowanie zostało usunięte - nie można go modyfikować");
+        } else return true;
     }
 
     @Override
@@ -142,11 +161,11 @@ public class VotingServiceImpl implements VotingService {
             for (Result r : voting.getResults()) {
                 if (r.getVote() == null) {
                     continue;
-                } else if (passwordEncoder.matches("TAK",r.getVote())) {
+                } else if (passwordEncoder.matches("TAK", r.getVote())) {
                     result[0] += 1;
-                } else if (passwordEncoder.matches("NIE",r.getVote())) {
+                } else if (passwordEncoder.matches("NIE", r.getVote())) {
                     result[1] += 1;
-                } else if (passwordEncoder.matches("WSTRZYMUJĘ SIĘ",r.getVote())) {
+                } else if (passwordEncoder.matches("WSTRZYMUJĘ SIĘ", r.getVote())) {
                     result[2] += 1;
                 }
             }

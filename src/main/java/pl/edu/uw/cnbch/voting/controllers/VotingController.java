@@ -66,22 +66,15 @@ public class VotingController {
 
     @GetMapping("/all")
     public String goToAllVotingView(Model model) {
-        model.addAttribute("allVotings", getVotingIDdate());
+        model.addAttribute("allVotings", votingService.getAllVotingIdData());
         return "allVotings.jsp";
-    }
-
-    private List<AllVotingDTO> getVotingIDdate() {
-        List<AllVotingDTO> allVotingDTO = new ArrayList<>();
-        for (Voting v : votingService.getAllActiveVotingData()) {
-            allVotingDTO.add(new AllVotingDTO(v));
-        }
-        return allVotingDTO;
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public Voting returnAllDataForVotingId(@PathVariable Long id) {
         try {
+            votingService.checkIfActive(id);
             return votingService.readById(id);
         } catch (Exception e) {
         }
@@ -91,6 +84,8 @@ public class VotingController {
     @GetMapping("/edit/{id}")
     public String goToEditForm(@PathVariable Long id, Model model) {
         try {
+            votingService.checkIfClosed(id);
+            votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
             return "createVoting.jsp";
         } catch (Exception e) {
@@ -126,6 +121,7 @@ public class VotingController {
     public String goToDeleteForm(@PathVariable Long id, Model model) {
         try {
             votingService.checkIfClosed(id);
+            votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
             model.addAttribute("message", MessageHelper.generateMessage(
                     "Usuwasz głosowanie - ta operacja jest nieodwracalna!",
@@ -159,6 +155,7 @@ public class VotingController {
     public String goToCloseForm(@PathVariable Long id, Model model){
         try {
             votingService.checkIfClosed(id);
+            votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
             model.addAttribute("message", MessageHelper.generateMessage(
                     "Zamykasz głosowanie - ta operacja jest nieodwracalna!",
@@ -196,6 +193,7 @@ public class VotingController {
     @RequestMapping("/result/{id}")
     public String goToResultForm(@PathVariable Long id, Model model){
         try{
+            votingService.checkIfActive(id);
             model.addAttribute("votingResult", votingService.generateResultForVoting(id));
             model.addAttribute("voting", votingService.readById(id));
             return "votingResult.jsp";
