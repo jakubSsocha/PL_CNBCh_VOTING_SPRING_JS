@@ -27,9 +27,7 @@
         <div>Treść głosowania: <form:textarea path="text" class="form-control"
                                               id="text" rows="5"/></div>
         <div style="text-align: center">
-            <div style="display: inline-block">Głosowanie aktywne <form:checkbox path="active" class="form-control"
-                                                                                 id="active"/></div>
-            <div style="display: inline-block; margin-left: 80px">Głosowanie tajne
+            Głosowanie tajne
                 <c:choose>
                     <c:when test="${voting.secret == true}">
                         <form:checkbox path="secret" class="form-control" id="secret" disabled="true"/>
@@ -38,12 +36,12 @@
                         <form:checkbox path="secret" class="form-control" id="secret"/>
                     </c:otherwise>
                 </c:choose>
-            </div>
         </div>
         <c:if test="${not empty voting.id}">
             <form:hidden path="id" value="${voting.id}"/>
             <form:hidden path="closed" value="${voting.closed}"/>
             <form:hidden path="secret" value="${voting.secret}"/>
+            <form:hidden path="active" value="${voting.active}"/>
         </c:if>
     </div>
     <div class="mainOptions_container">

@@ -1,4 +1,9 @@
+import {setButtonStyleTo} from "./buttonStyle.js";
+
 document.addEventListener("DOMContentLoaded", function () {
+
+    const goToAddVotingFormButton = document.getElementById("goToAddVotingForm");
+    setButtonStyleTo(goToAddVotingFormButton);
 
     const buttons = document.getElementsByClassName("buttons");
 

@@ -81,10 +81,11 @@ public class VotingServiceImpl implements VotingService {
     @Override
     public void edit(Voting voting) throws Exception {
         Voting oldSettings = readByName(voting.getName());
+        boolean wasSecret = oldSettings.isSecret();
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
         votingRepository.save(voting);
-        if(!oldSettings.isSecret() && voting.isSecret()){
+        if(!wasSecret && voting.isSecret()){
             resultService.encodeAllResultsForVotingId(voting.getId());
         }
         resultService.setAllResultsInactiveForVotingId(voting.getId());

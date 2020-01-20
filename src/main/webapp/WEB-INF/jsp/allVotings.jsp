@@ -16,12 +16,17 @@
 <header>
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
 </header>
-<div class="col-lg-3"></div>
-<div class="col-lg-6">
+<div class="col-lg-2"></div>
+<div class="col-lg-8">
     <div style="text-align: center; margin-bottom: 15px">
         <div class="mainOptions_container">
             <p class="mainOptions_text">Zarządzanie głosowaniami</p>
         </div>
+        <a href="/voting/add" style="text-decoration: none">
+        <div class="additionalOptions_container" id="goToAddVotingForm">
+            <p class="additionalOptions_text">Dodaj nowe głosowanie</p>
+        </div>
+        </a>
     </div>
     <div class="panel-group" id="accordion">
         <c:forEach items="${allVotings}" var="voting" varStatus="theCount">
@@ -87,7 +92,7 @@
         </c:forEach>
     </div>
 </div>
-<div class="col-lg-3"></div>
+<div class="col-lg-2"></div>
 </body>
 </html>
-<script src="${pageContext.request.contextPath}/resources/js/allVotings.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/allVotings.js" type="module" type="application/javascript"></script>
