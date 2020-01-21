@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -42,12 +43,12 @@
     <div class="additionalOptions_container">
         <p class="additionalOptions_text">Wyniki głosowania:</p>
         <div style="text-align: left">
-            <p>Uprawnionych do głosowania: ${votingResult.users}</p>
-            <p>Oddanych głosów: ${votingResult.votes}</p>
-            <p>TAK: ${votingResult.yes}</p>
-            <p>NIE: ${votingResult.no}</p>
-            <p>WSTRZYMUJĘ SIĘ: ${votingResult.abstain}</p>
+            <p>Uprawnionych do głosowania: ${fn:length(votingResult.users)}</p>
             <p>większość zwykła: ${votingResult.majority}</p>
+            <p>Oddanych głosów: ${votingResult.votes}</p><br />
+            <p>ZA: ${votingResult.yes}</p>
+            <p>PRZECIW: ${votingResult.no}</p>
+            <p>WSTRZYMUJĘ SIĘ: ${votingResult.abstain}</p>
         </div>
     </div>
 
@@ -62,7 +63,7 @@
                     <th>Głos</th>
                     <th>Data oddania głosu</th>
                 </tr>
-                <c:forEach items="${voting.results}" var="result" varStatus="theCount">
+                <c:forEach items="${votingResult.users}" var="result" varStatus="theCount">
                     <tr>
                         <td>${theCount.index+1}</td>
                         <td>${result.user.name}</td>

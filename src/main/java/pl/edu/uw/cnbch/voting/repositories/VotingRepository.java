@@ -25,4 +25,5 @@ public interface VotingRepository extends JpaRepository<Voting, Long> {
 
     @Query("select v from Voting v where :user member of v.users and v.active = true and v.closed = true order by v.closedDate desc")
     List<Voting> findAllUserActiveClosedVoting(@Param("user") User user);
+
 }

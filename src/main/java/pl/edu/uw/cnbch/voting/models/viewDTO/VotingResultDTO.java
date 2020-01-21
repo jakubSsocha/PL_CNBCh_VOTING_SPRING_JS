@@ -1,21 +1,25 @@
 package pl.edu.uw.cnbch.voting.models.viewDTO;
 
+import pl.edu.uw.cnbch.voting.models.entities.Result;
+
+import java.util.List;
+
 public class VotingResultDTO {
 
     private int yes;
     private int no;
     private int abstain;
-    private int users;
+    private List<Result> users;
     private int votes;
     private int majority;
     private boolean result;
 
-    public VotingResultDTO(int yes, int no, int abstain, int users) {
+    public VotingResultDTO(int yes, int no, int abstain, List<Result> users) {
         this.yes = yes;
         this.no = no;
         this.abstain = abstain;
         this.users = users;
-        this.majority = (this.users/2)+1;
+        this.majority = (this.users.size()/2)+1;
         this.result = isResultPositive();
         this.votes = this.yes + this.no + this.abstain;
     }
@@ -51,11 +55,11 @@ public class VotingResultDTO {
         this.abstain = abstain;
     }
 
-    public int getUsers() {
+    public List<Result> getUsers() {
         return users;
     }
 
-    public void setUsers(int users) {
+    public void setUsers(List<Result> users) {
         this.users = users;
     }
 

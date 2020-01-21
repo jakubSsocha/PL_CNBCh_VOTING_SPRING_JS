@@ -152,14 +152,14 @@ public class VotingServiceImpl implements VotingService {
                 result[0],
                 result[1],
                 result[2],
-                voting.getResults().size()
+                resultService.getAllUsersResultsForVoting(voting.getId())
         );
     }
 
     private int[] countResults(Voting voting) {
         int[] result = new int[3];
         if (voting.isSecret()) {
-            for (Result r : voting.getResults()) {
+            for (Result r : resultService.getAllUsersResultsForVoting(voting.getId())) {
                 if (r.getVote() == null) {
                     continue;
                 } else if (passwordEncoder.matches("TAK", r.getVote())) {

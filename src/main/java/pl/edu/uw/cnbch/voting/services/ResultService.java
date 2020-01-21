@@ -29,4 +29,6 @@ public interface ResultService {
     void encodeAllResultsForVotingId(Long id) throws Exception;
 
     List<Result> getAllEmptyResultsForUser() throws Exception;
+
+    List<Result> getAllUsersResultsForVoting(Long id);
 }
