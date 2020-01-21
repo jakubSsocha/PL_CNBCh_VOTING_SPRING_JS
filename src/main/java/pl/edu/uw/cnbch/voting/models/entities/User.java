@@ -20,13 +20,11 @@ public class User {
     @NotNull
     @NotEmpty
     @Length(min = 3)
-    @Pattern(regexp="[A-Z][a-z]+")
     private String firstName;
 
     @NotNull
     @NotEmpty
     @Length(min = 3)
-    @Pattern(regexp="[A-Z][a-zA-Z-]+")
     private String lastName;
 
     @Column(nullable = false, unique = true)

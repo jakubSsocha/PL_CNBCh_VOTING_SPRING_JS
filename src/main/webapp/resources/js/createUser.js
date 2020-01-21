@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const FIRST_NAME_FORM_INPUT = {
         htmlHandler: document.getElementById("firstName"),
-        regexp: /[A-Z][a-z]+/,
+        regexp: /(.*?)/,
         minInputLength: MIN_STRING_LENGTH,
         messageHandler: document.getElementById("firstName_validator"),
         errorMessage: "To pole może zawierać tylko wielkie i małe litery"
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const LAST_NAME_FORM_INPUT = {
         htmlHandler: document.getElementById("lastName"),
-        regexp: /[A-Z][a-zA-Z-]+/,
+        regexp: /(.*?)/,
         minInputLength: MIN_STRING_LENGTH,
         messageHandler: document.getElementById("lastName_validator"),
         errorMessage: "To pole może zawierać tylko wielkie i małe litery oraz '-' "

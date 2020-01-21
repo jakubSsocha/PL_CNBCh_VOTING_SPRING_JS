@@ -6,6 +6,7 @@ import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.models.viewDTO.AllVotingDTO;
+import pl.edu.uw.cnbch.voting.models.viewDTO.VotingDetailsDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.VotingResultDTO;
 import pl.edu.uw.cnbch.voting.repositories.VotingRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
@@ -191,5 +192,11 @@ public class VotingServiceImpl implements VotingService {
     public List<Voting> getAllUserClosedVoting() throws Exception {
         User user = mainService.getLoggedUser();
         return votingRepository.findAllUserActiveClosedVoting(user);
+    }
+
+    @Override
+    public VotingDetailsDTO getDetailsForVoting(Long id) throws Exception {
+        Voting voting = readById(id);
+        return new VotingDetailsDTO(voting);
     }
 }

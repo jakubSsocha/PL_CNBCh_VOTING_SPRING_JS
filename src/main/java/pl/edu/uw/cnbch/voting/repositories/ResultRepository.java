@@ -16,7 +16,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     Optional<Result> findByVotingAndUser(Voting v, User u);
 
-    @Query("select r from Result r where r.voting.id = :id ")
+    @Query("select r from Result r where r.voting.id = :id and r.active = true")
     List<Result> findByVotingId(@Param("id") Long id);
 
     @Query("select r from Result r where r.id = :resultId and r.user.id = :userId")

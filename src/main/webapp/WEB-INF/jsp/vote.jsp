@@ -26,22 +26,18 @@
                                                                        id="description" readonly="true"/></div>
         <div>Treść głosowania: <form:textarea path="voting.text" class="form-control"
                                               id="text" rows="8" readonly="true"/></div>
-        <div style="text-align: center">
-            <div style="display: inline-block">Głosowanie aktywne <form:checkbox path="voting.active" class="form-control"
-                                                                                 id="active" disabled="true"/></div>
-            <div style="display: inline-block; margin-left: 80px">Głosowanie tajne
+            <div>Głosowanie tajne
                         <form:checkbox path="voting.secret" class="form-control" id="secret" disabled="true"/>
             </div>
-        </div>
     </div>
     <div class="mainOptions_container">
         <p class="mainOptions_text">Głosuj:</p>
         <div style="text-align: center">
-            <form:radiobuttons items="${votingResults}" path="vote" class="form-control"/>
+            <form:radiobuttons items="${votingResults}" path="vote" class="form-control votingOptions"/>
         </div>
     </div>
     <div class="mainOptions_container">
-            <div><input type="submit" value="Oddaj głos" class="btn btn-success"></div>
+            <div><input type="submit" value="Oddaj głos" class="btn btn-success" id="button"></div>
             </form:form>
     </div>
     <br/>
@@ -49,3 +45,4 @@
 <div class="col-lg-3"></div>
 </body>
 </html>
+<script src="${pageContext.request.contextPath}/resources/js/vote.js" type="application/javascript"></script>

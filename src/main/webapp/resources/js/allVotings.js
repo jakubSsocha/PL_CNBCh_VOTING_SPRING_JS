@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 dataType: "json"
             }).done(function (voting) {
                 addToPage(voting);
-                const isVotingSecret = voting.secret;
             }).fail(function (xhr, status, err) {
             }).always(function (xhr, status) {
             });

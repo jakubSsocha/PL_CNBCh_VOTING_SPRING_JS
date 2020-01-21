@@ -93,6 +93,9 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public void saveUserVoteFor(Result result) throws Exception {
+        if(result.getVote() == null){
+            throw new Exception("Głos nie może być pusty");
+        }
         Result voteResult = getAllGeneralInformationFor(result);
         if(result.getVoting().isSecret()){
             voteResult = encodeResultVote(voteResult);

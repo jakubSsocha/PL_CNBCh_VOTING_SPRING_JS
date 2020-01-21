@@ -27,15 +27,12 @@
                                                                        id="description" readonly="true"/></div>
         <div>Treść głosowania: <form:textarea path="text" class="form-control"
                                               id="text" rows="5" readonly="true"/></div>
-        <div style="text-align: center">
-            <div style="display: inline-block">Głosowanie aktywne <form:checkbox path="active" class="form-control"
-                                                                                 id="active" disabled="true"/></div>
-            <div style="display: inline-block; margin-left: 80px">Głosowanie tajne
+            <div>Głosowanie tajne
                         <form:checkbox path="secret" class="form-control" id="secret" disabled="true"/>
             </div>
-        </div>
             <form:hidden path="id" value="${voting.id}"/>
             <form:hidden path="closed" value="${voting.closed}"/>
+            <form:hidden path="active" value="${voting.active}"/>
     </div>
     <div class="mainOptions_container">
         <p class="mainOptions_text">Użytkownicy</p>

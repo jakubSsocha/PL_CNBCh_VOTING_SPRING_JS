@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
+import pl.edu.uw.cnbch.voting.models.viewDTO.VotingDetailsDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
@@ -73,13 +74,13 @@ public class VotingController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Voting returnAllDataForVotingId(@PathVariable Long id) {
+    public VotingDetailsDTO returnAllDataForVotingId(@PathVariable Long id) {
         try {
             votingService.checkIfActive(id);
-            return votingService.readById(id);
+            return votingService.getDetailsForVoting(id);
         } catch (Exception e) {
         }
-        return new Voting();
+        return new VotingDetailsDTO();
     }
 
     @GetMapping("/edit/{id}")
