@@ -97,6 +97,7 @@ public class VotingServiceImpl implements VotingService {
         boolean wasSecret = oldSettings.isSecret();
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
+        voting.setUsers(oldSettings.getUsers());
         votingRepository.save(voting);
         if (!wasSecret && voting.isSecret()) {
             resultService.encodeAllResultsForVotingId(voting.getId());
@@ -126,6 +127,7 @@ public class VotingServiceImpl implements VotingService {
         Voting oldSettings = readByName(voting.getName());
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
+        voting.setUsers(oldSettings.getUsers());
         checkIfClosed(voting.getId());
         resultService.setAllResultsInactiveForVotingId(voting.getId());
         voting.setActive(false);
@@ -140,6 +142,7 @@ public class VotingServiceImpl implements VotingService {
         resultService.selAllResultsClosedForVotingId(voting.getId(), now);
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(now);
+        voting.setUsers(oldSettings.getUsers());
         voting.setClosedDate(now);
         voting.setClosed(true);
         votingRepository.save(voting);
