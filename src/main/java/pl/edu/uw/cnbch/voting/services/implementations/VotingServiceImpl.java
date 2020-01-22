@@ -97,7 +97,6 @@ public class VotingServiceImpl implements VotingService {
         boolean wasSecret = oldSettings.isSecret();
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
-        voting.setUsers(oldSettings.getUsers());
         votingRepository.save(voting);
         if (!wasSecret && voting.isSecret()) {
             resultService.encodeAllResultsForVotingId(voting.getId());
@@ -166,9 +165,9 @@ public class VotingServiceImpl implements VotingService {
             for (Result r : resultService.getAllUsersResultsForVoting(voting.getId())) {
                 if (r.getVote() == null) {
                     continue;
-                } else if (passwordEncoder.matches("TAK", r.getVote())) {
+                } else if (passwordEncoder.matches("ZA", r.getVote())) {
                     result[0] += 1;
-                } else if (passwordEncoder.matches("NIE", r.getVote())) {
+                } else if (passwordEncoder.matches("PRZECIW", r.getVote())) {
                     result[1] += 1;
                 } else if (passwordEncoder.matches("WSTRZYMUJĘ SIĘ", r.getVote())) {
                     result[2] += 1;
@@ -179,9 +178,9 @@ public class VotingServiceImpl implements VotingService {
             for (Result r : voting.getResults()) {
                 if (r.getVote() == null) {
                     continue;
-                } else if (r.getVote().equals("TAK")) {
+                } else if (r.getVote().equals("ZA")) {
                     result[0] += 1;
-                } else if (r.getVote().equals("NIE")) {
+                } else if (r.getVote().equals("PRZECIW")) {
                     result[1] += 1;
                 } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")) {
                     result[2] += 1;

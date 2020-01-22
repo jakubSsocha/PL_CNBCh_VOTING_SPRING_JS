@@ -27,7 +27,7 @@ public class ResultController {
 
     @ModelAttribute("votingResults")
     public List<String> votingResults(){
-        return Arrays.asList("TAK", "NIE", "WSTRZYMUJĘ SIĘ");
+        return Arrays.asList("ZA", "PRZECIW", "WSTRZYMUJĘ SIĘ");
     }
 
     @RequestMapping("/{id}")
