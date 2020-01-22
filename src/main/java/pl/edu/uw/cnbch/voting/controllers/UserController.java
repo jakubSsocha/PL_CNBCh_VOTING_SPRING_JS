@@ -4,11 +4,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
+import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
@@ -65,7 +64,26 @@ public class UserController {
 
     @RequestMapping("/user/all")
     public String goToAllUsers(Model model) {
-        return "gogo";
+        try {
+            model.addAttribute("allUsers", userService.findBasicInfoForAllUsers());
+            return "allUsers.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+    }
+
+    @RequestMapping("/user/{id}")
+    @ResponseBody
+    public UserExtendedDTO getExtendedUserData(@PathVariable Long id, Model model){
+        try{
+            return userService.findExtendedDataForUser(id);
+        } catch (Exception e){
+            return new UserExtendedDTO();
+        }
     }
 
     @RequestMapping("/user/votings")

@@ -14,7 +14,7 @@
         <sec:authorize access="hasRole('USER')">
         <li><a href="/user/votings">Głosuj</a></li>
         </sec:authorize>
-        <li><a href="#">Zarządzanie Użytkownikami</a></li>
+        <li><a href="/user/all">Zarządzanie Użytkownikami</a></li>
         <li><a href="/voting/all">Zarządzanie Głosowaniami</a></li>
         <li><a href="#" onclick="document.getElementById('logout_form').submit(); return false;">
             <span class="glyphicon glyphicon-log-out"></span> Wyloguj się</a></li>

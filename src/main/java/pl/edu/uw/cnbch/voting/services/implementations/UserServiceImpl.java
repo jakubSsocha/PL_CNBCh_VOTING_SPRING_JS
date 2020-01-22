@@ -4,27 +4,32 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
+import pl.edu.uw.cnbch.voting.models.viewDTO.UserBasicDTO;
+import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
 import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
+import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final MainService mainService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           MainService mainService,
                            BCryptPasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.mainService = mainService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //potrzebne do SpringSecurity
@@ -53,5 +58,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllActiveUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserBasicDTO> findBasicInfoForAllUsers(){
+        List<UserBasicDTO> userBasicDTOList = new ArrayList<>();
+        for(User u : userRepository.findAllUsers()){
+            userBasicDTOList.add(new UserBasicDTO(u));
+        }
+        return userBasicDTOList;
+    }
+
+    @Override
+    public UserExtendedDTO findExtendedDataForUser(Long id) throws Exception {
+        User user = findByUserId(id);
+        return new UserExtendedDTO(user);
+    }
+
+    @Override
+    public User findByUserId(Long id) throws Exception {
+        Optional<User> user = userRepository.findUserByID(id);
+        mainService.checkIfIsEmpty(user);
+        return user.get();
     }
 }

@@ -20,7 +20,8 @@ public class ResultController {
     private final ResultService resultService;
     private final MainService mainService;
 
-    public ResultController(ResultService resultService, MainService mainService) {
+    public ResultController(ResultService resultService,
+                            MainService mainService) {
         this.resultService = resultService;
         this.mainService = mainService;
     }
@@ -37,7 +38,8 @@ public class ResultController {
     }
 
     @GetMapping("/vote/{id}")
-    public String goToVotingForm(Model model, @PathVariable Long id) {
+    public String goToVotingForm(@PathVariable Long id,
+                                 Model model) {
         try {
             resultService.checkIfResultBelongToUser(id);
             resultService.checkIfResultIsActive(id);
@@ -52,9 +54,10 @@ public class ResultController {
         return "vote.jsp";
     }
 
-    //TODO - it's still possible to vote with empty voice
     @PostMapping("/vote/{id}")
-    public String createVotingResult(@Valid Result result, BindingResult bindingResult, Model model){
+    public String createVotingResult(@Valid Result result,
+                                     BindingResult bindingResult,
+                                     Model model){
         try{
             mainService.checkForErrorsIn(bindingResult);
             resultService.saveUserVoteFor(result);

@@ -47,7 +47,9 @@ public class VotingController {
     }
 
     @PostMapping("/add")
-    public String addNewVotingAndEmptyUsersResults(@Valid Voting voting, BindingResult bindingResult, Model model) {
+    public String addNewVotingAndEmptyUsersResults(@Valid Voting voting,
+                                                   BindingResult bindingResult,
+                                                   Model model) {
         try {
             mainService.checkForErrorsIn(bindingResult);
             votingService.create(voting);
@@ -120,7 +122,8 @@ public class VotingController {
     }
 
     @GetMapping("/delete/{id}")
-    public String goToDeleteForm(@PathVariable Long id, Model model) {
+    public String goToDeleteForm(@PathVariable Long id,
+                                 Model model) {
         try {
             votingService.checkIfClosed(id);
             votingService.checkIfActive(id);
@@ -140,7 +143,8 @@ public class VotingController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteVoting(@ModelAttribute Voting voting, Model model) {
+    public String deleteVoting(@ModelAttribute Voting voting,
+                               Model model) {
         try {
             votingService.delete(voting);
         } catch (Exception e) {
@@ -154,7 +158,8 @@ public class VotingController {
     }
 
     @GetMapping("/close/{id}")
-    public String goToCloseForm(@PathVariable Long id, Model model){
+    public String goToCloseForm(@PathVariable Long id,
+                                Model model){
         try {
             votingService.checkIfClosed(id);
             votingService.checkIfActive(id);
@@ -174,7 +179,8 @@ public class VotingController {
     }
 
     @PostMapping("/close/{id}")
-    public String closeVoting(@ModelAttribute Voting voting, Model model){
+    public String closeVoting(@ModelAttribute Voting voting,
+                              Model model){
         try{
             votingService.checkIfClosed(voting.getId());
             votingService.close(voting);
@@ -193,7 +199,8 @@ public class VotingController {
     }
 
     @RequestMapping("/result/{id}")
-    public String goToResultForm(@PathVariable Long id, Model model){
+    public String goToResultForm(@PathVariable Long id,
+                                 Model model){
         try{
             votingService.checkIfActive(id);
             model.addAttribute("votingResult", votingService.generateResultForVoting(id));
