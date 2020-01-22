@@ -79,8 +79,8 @@ public class VotingController {
             votingService.checkIfActive(id);
             return votingService.getDetailsForVoting(id);
         } catch (Exception e) {
+            return new VotingDetailsDTO();
         }
-        return new VotingDetailsDTO();
     }
 
     @GetMapping("/edit/{id}")

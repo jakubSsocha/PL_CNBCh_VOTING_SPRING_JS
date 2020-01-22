@@ -21,8 +21,16 @@ public class VotingDetailsDTO {
         this.secret = voting.isSecret();
         this.closed = voting.isClosed();
         this.createdDate = voting.getCreatedDate().format(formatter);
-        this.lastModificationDate = voting.getLastModificationDate().format(formatter);
-        this.closedDate = voting.getClosedDate().format(formatter);
+        if(voting.getLastModificationDate() == null){
+            this.lastModificationDate = "";
+        } else {
+            this.lastModificationDate = voting.getLastModificationDate().format(formatter);
+        }
+        if(voting.getClosedDate() == null){
+            this.closedDate = "";
+        } else {
+            this.closedDate = voting.getClosedDate().format(formatter);
+        }
         this.text = voting.getText();
     }
 

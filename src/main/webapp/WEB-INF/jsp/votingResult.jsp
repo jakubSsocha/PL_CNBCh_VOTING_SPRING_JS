@@ -16,7 +16,7 @@
 <body>
 <div class="col-lg-2"></div>
 <div class="col-lg-8" style="text-align: center">
-    <p class="additionalOptions_text" style="font-size: 130%">
+    <br /><p class="additionalOptions_text" style="font-size: 130%">
         Wyniki głosowania uchwały: ${voting.name}
     </p>
     <p class="additionalOptions_text">wynik głosowania:
