@@ -10,28 +10,31 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/allVotings.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <header>
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
 </header>
-<div class="col-lg-3"></div>
-<div class="col-lg-6" style="text-align: center">
-    <div class="mainOptions_container">
-        <p class="mainOptions_text">Wyniki głosowań:</p>
+<div class="col-lg-2"></div>
+<div class="col-lg-8">
+    <div class="center-container">
+        <div class="main_container">
+            <p class="main_text">Wyniki głosowań:</p>
+        </div>
+        <c:forEach items="${votings}" var="voting" varStatus="theCount">
+            <a href="/voting/result/${voting.id}" style="text-decoration: none; color: black">
+                <div class="link_big">
+                    <p class="additional_text">
+                            ${voting.name} : ${voting.description}
+                    </p>
+                </div>
+            </a>
+        </c:forEach>
     </div>
-    <c:forEach items="${votings}" var="voting" varStatus="theCount">
-        <a href="/voting/result/${voting.id}" style="text-decoration: none">
-            <div class="additionalOptions_container">
-                <p class="additionalOptions_text">
-                        ${voting.name} : ${voting.description}
-                </p>
-            </div>
-        </a>
-    </c:forEach>
 </div>
-<div class="col-lg-3"></div>
+<div class="col-lg-2"></div>
 </body>
 </html>
-<script src="${pageContext.request.contextPath}/resources/js/userVotings.js" type="module" type="application/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/userVotingResultButton.js" type="module"
+        type="application/javascript"></script>

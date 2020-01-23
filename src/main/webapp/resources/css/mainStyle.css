@@ -33,7 +33,11 @@ button{
 }
 
 img{
-    margin: 40px;
+    margin: 20px;
+    height: auto;
+    width: auto;
+    max-width: 800px;
+    max-height: 800px;
 }
 
 /* containers */
@@ -93,9 +97,16 @@ img{
     text-align: center;
 }
 
+.checkbox-container{
+    height: auto;
+    width: auto;
+    max-width: 300px;
+    max-height: 300px;
+}
+
 /* texts */
 .main_text{
-    margin: 30px;
+    margin: 20px;
     font-size: 150%;
     font-weight: bold;
 }

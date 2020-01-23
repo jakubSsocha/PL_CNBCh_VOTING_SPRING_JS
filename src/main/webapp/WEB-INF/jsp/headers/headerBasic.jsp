@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pl">
+<link href="${pageContext.request.contextPath}/resources/css/headerStyle.css" rel="stylesheet">
 <div class="container-fluid">
     <div class="navbar-header">
         <a class="navbar-brand" href="http://www.cnbch.uw.edu.pl">CNBCh UW</a>

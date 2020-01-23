@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/index.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -17,15 +17,15 @@
         <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
     </header>
 </header>
-<div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-sm-3 sidenav"></div>
-        <div class="col-sm-6 text-center">
-            <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/messageContainer.jsp"></jsp:include>
-                <img src="${pageContext.request.contextPath}/resources/img/cnbch.png"/>
-        </div>
-        <div class="col-sm-3 sidenav"></div>
+<div class="col-sm-3"></div>
+<div class="col-sm-6">
+    <div class="center-container">
+        <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/messageContainer.jsp"></jsp:include>
+        <img src="${pageContext.request.contextPath}/resources/img/cnbch.png"/>
     </div>
+</div>
+<div class="col-sm-3"></div>
+</div>
 </div>
 </body>
 </html>

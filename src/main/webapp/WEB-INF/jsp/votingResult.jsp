@@ -11,37 +11,40 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/votingResult.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <div class="col-lg-2"></div>
-<div class="col-lg-8" style="text-align: center">
-    <br /><p class="additionalOptions_text" style="font-size: 130%">
+<div class="col-lg-8">
+    <div class="center-container">
+    <div class="main_container">
+    <p class="main_text">
         Wyniki głosowania uchwały: ${voting.name}
     </p>
-    <p class="additionalOptions_text">wynik głosowania:
+    </div>
+    <div class="main_container">
         <c:choose>
             <c:when test="${votingResult.result == true}">
-                <p style="color:forestgreen; font-weight: bold; font-size: 130%"> Uchwała przyjęta </p>
+                <p class="main_text" style="color: forestgreen;"> Uchwała przyjęta </p>
             </c:when>
             <c:otherwise>
-                <p style="color:darkred; font-weight: bold; font-size: 130%"> Uchwała odrzucona </p>
+                <p class="main_text" style="color:red"> Uchwała odrzucona </p>
             </c:otherwise>
         </c:choose>
-    </p><br />
-    <div class="mainOptions_container">
-        <p class="additionalOptions_text">dotyczące:</p><br/>
+    </div>
+    <div class="main_container">
+        <p class="additional_text">dotyczące:</p><br/>
         <div style="text-align: justify">${voting.description}</div>
         <br/>
     </div>
 
-    <div class="additionalOptions_container">
-        <p class="additionalOptions_text">treść:</p>
+    <div class="main_container">
+        <p class="additional_text">treść:</p>
         <div style="text-align: justify">${voting.text}</div>
     </div>
 
-    <div class="additionalOptions_container">
-        <p class="additionalOptions_text">Wyniki głosowania:</p>
+    <div class="main_container">
+        <p class="additional_text">Wyniki głosowania:</p>
         <div style="text-align: left">
             <p>Uprawnionych do głosowania: ${fn:length(votingResult.users)}</p>
             <p>większość zwykła: ${votingResult.majority}</p>
@@ -52,8 +55,8 @@
         </div>
     </div>
 
-    <div class="additionalOptions_container">
-        <p class="additionalOptions_text">wyniki szczegółowe:</p>
+    <div class="main_container">
+        <p class="additional_text">wyniki szczegółowe:</p>
         <div style="text-align: left">
             <br/>
             <table style="width:100%" class="table table-bordered">
@@ -87,17 +90,17 @@
         </div>
     </div>
 
-    <div class="additionalOptions_container">
-        <p class="additionalOptions_text">głosowanie zakończono:
+    <div class="main_container">
+        <p class="additional_text">głosowanie zakończono:
             ${voting.closedDate.format( DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"))}</p>
-    </div><br /><br />
+    </div>
 
-    <div class="additionalOptions_container">
-        <p class="additionalOptions_text">podpisy:</p><br /><br />
+    <div class="main_container">
+        <p class="additional_text">podpisy:</p><br /><br />
         <p>..........................</p>
         <p>Przewodniczący Rady Naukowej CNBCh UW</p>
     </div>
-
+    </div>
 </div>
 <div class="col-lg-2"></div>
 </body>

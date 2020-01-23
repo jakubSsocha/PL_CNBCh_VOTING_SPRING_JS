@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="pl">
+<link href="${pageContext.request.contextPath}/resources/css/headerStyle.css" rel="stylesheet">
 <sec:authorize access="hasRole('ADMIN')">
 <div class="container-fluid">
     <div class="navbar-header">

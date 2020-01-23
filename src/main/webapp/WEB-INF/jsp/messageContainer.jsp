@@ -20,7 +20,7 @@
                 class="success"
             </c:when>
         </c:choose>
-id="messageHandler"/>
+            id="messageHandler"/>
     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     <c:choose>
         <c:when test="${message.type == 'error'}">

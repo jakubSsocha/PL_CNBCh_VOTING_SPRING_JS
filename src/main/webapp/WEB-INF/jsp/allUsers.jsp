@@ -73,7 +73,7 @@
                                 <li><b>data rejestracji: </b><span id="createdDate${user.id}"></span></li>
                             </ul>
                         </div>
-                        <div class="additionalClose_container">
+                        <div class="additional_container">
                             <p class="additional_text">Wyniki głosowań:</p>
                             <ul id="results${user.id}"></ul>
                         </div>

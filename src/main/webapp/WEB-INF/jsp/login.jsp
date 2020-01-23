@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/login.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -17,11 +17,11 @@
         <jsp:include page="${pageContext.request.contextPath}/WEB-INF/jsp/header.jsp"></jsp:include>
     </header>
 </header>
-<div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
-        <div class="mainOptions_container">
-            <p class="mainOptions_text">Logowanie do konta</p>
+<div class="col-lg-3"></div>
+<div class="col-lg-6">
+    <div class="center-container">
+        <div class="main_container">
+            <p class="main_text">Logowanie do konta</p>
             <form method="post">
                 <div>Adres e-mail : <span id="loginInput_email_validator"></span>
                     <input type="text" name="username" class="form-control" id="loginInput_email"></div>
@@ -34,21 +34,22 @@
             </form>
             <br/>
         </div>
-        <div class="additionalOptions_container">
-            <p class="additionalOptions_text">Nie masz konta?
-                <a class="additionalOptions_link" role="button" href="/user/add">
+        <div class="main_container">
+            <p>Nie masz konta?
+                <a class="main_link" role="button" href="/user/add">
                     Zarejestruj się
                 </a>
             </p>
-            <p class="additionalOptions_text">Nie pamiętasz hasła?
-                <a class="additionalOptions_link" role="button" href="#">
+            <p>Nie pamiętasz hasła?
+                <a class="main_link" role="button" href="#">
                     Przypomnij hasło
                 </a>
             </p>
         </div>
     </div>
-    <div class="col-lg-3"></div>
 </div>
+<div class="col-lg-3"></div>
 </body>
 </html>
-<script type="module" src="${pageContext.request.contextPath}/resources/js/login.js" type="application/javascript"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/login.js"
+        type="application/javascript"></script>

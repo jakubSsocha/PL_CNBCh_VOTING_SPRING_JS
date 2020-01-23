@@ -77,7 +77,7 @@
                             <p class="additional_text">Treść głosowania:</p>
                             <span id="text${voting.id}"></span>
                         </div>
-                        <div class="additionalClose_container">
+                        <div class="additional_container">
                             <p class="additional_text">Głosujący:</p>
                             <div id="users${voting.id}">
                             </div>
