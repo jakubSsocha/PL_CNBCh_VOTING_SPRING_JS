@@ -49,9 +49,6 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     public void resetPassword(){
-        User user = userService.findByUserName("jakub.socha@wp.pl");
-        System.out.println(user.getUsername());
-        user.setPassword("password");
-        userService.saveUserNewPassword(user);
+//TODO - implement mechanism for password reset
     }
 }

@@ -125,7 +125,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void setAllResultsInactiveForVotingId(Long id) throws Exception {
+    public void setAllResultsInactiveForVotingId(Long id){
         List<Result> resultList = resultRepository.findAllByVotingId(id);
         for(Result r : resultList){
             r.setActive(false);
@@ -134,7 +134,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void selAllResultsClosedForVotingId(Long id, LocalDateTime now) throws Exception {
+    public void selAllResultsClosedForVotingId(Long id, LocalDateTime now){
         List<Result> resultList = resultRepository.findAllByVotingId(id);
         for(Result r : resultList){
             closeResult(r, now);
@@ -148,7 +148,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void encodeAllResultsForVotingId(Long id) throws Exception {
+    public void encodeAllResultsForVotingId(Long id){
         List<Result> resultList = resultRepository.findAllByVotingId(id);
         for(Result r : resultList){
             r = encodeResultVote(r);

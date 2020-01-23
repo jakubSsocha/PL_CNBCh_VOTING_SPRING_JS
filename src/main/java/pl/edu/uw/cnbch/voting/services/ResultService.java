@@ -22,11 +22,11 @@ public interface ResultService {
 
     void checkIfResultBelongToUser(Long resultId) throws Exception;
 
-    void setAllResultsInactiveForVotingId(Long id) throws Exception;
+    void setAllResultsInactiveForVotingId(Long id);
 
-    void selAllResultsClosedForVotingId(Long id, LocalDateTime localDateTime) throws Exception;
+    void selAllResultsClosedForVotingId(Long id, LocalDateTime localDateTime);
 
-    void encodeAllResultsForVotingId(Long id) throws Exception;
+    void encodeAllResultsForVotingId(Long id);
 
     List<Result> getAllEmptyResultsForUser() throws Exception;
 

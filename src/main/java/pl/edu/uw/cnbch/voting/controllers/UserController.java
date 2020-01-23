@@ -42,19 +42,19 @@ public class UserController {
 
     @PostMapping("/user/add")
     public String validateAndCreateUser(@Valid User user, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    "Nie udało się utworzyć użytkownika",
-                    "error"));
-            return "index.jsp";
-        }
         try {
+            mainService.checkForErrorsIn(bindingResult);
             userService.saveUser(user);
         } catch (DataIntegrityViolationException e) {
-
             model.addAttribute("message", MessageDTO.generateMessage(
                     "Użytkownik o podanym adresie e-mail:<br />" + user.getEmail() + "<br /> jest już zarejestrowany w bazie danych",
                     "error"));
+            return "index.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(
