@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/allUsers.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -19,9 +19,9 @@
 <div class="col-lg-2"></div>
 
 <div class="col-lg-8">
-    <div style="text-align: center; margin-bottom: 15px">
-        <div class="mainOptions_container">
-            <p class="mainOptions_text">Zarządzanie użytkownikami</p>
+    <div class="center-container">
+        <div class="main_container">
+            <p class="main_text">Zarządzanie użytkownikami</p>
         </div>
     </div>
     <div class="panel-group" id="accordion">
@@ -37,11 +37,11 @@
                 </div>
                 <div id="collapse${user.id}" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Opcje:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Opcje:</p>
                             <c:choose>
                                 <c:when test="${user.active == true}">
-                                    <div style="text-align: center">
+                                    <div class="center-container">
                                         <button class="btn btn-danger"
                                                 onclick="window.location.href='/user/changeStatus/${user.id}'">
                                             Dezaktywuj Użytkownika
@@ -52,7 +52,7 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${user.active == false}">
-                                    <div style="text-align: center">
+                                    <div class="center-container">
                                         <button class="btn btn-success"
                                                 onclick="window.location.href='/voting/result/${user.id}'">Aktywuj
                                             Użytkownika
@@ -61,23 +61,24 @@
                                 </c:when>
                             </c:choose>
                         </div>
-                        <div class="additionalOptions_container">
-                            <div id="roles${user.id}" style="text-align: center"></div><br />
+                        <div class="additional_container">
+                            <p class="additional_text">Role:</p>
+                            <div id="roles${user.id}" class="center-container"></div><br />
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Informacje:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Informacje:</p>
                             <ul>
                                 <li><b>status: </b><span id="status${user.id}"></span></li>
                                 <li><b>email: </b><span id="email${user.id}"></span></li>
                                 <li><b>data rejestracji: </b><span id="createdDate${user.id}"></span></li>
                             </ul>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Wyniki głosowań:</p>
+                        <div class="additionalClose_container">
+                            <p class="additional_text">Wyniki głosowań:</p>
                             <ul id="results${user.id}"></ul>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Komentarze:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Komentarze:</p>
                             <p>Funkcjonalność zostanie dodana w przyszłości</p>
                         </div>
                     </div>

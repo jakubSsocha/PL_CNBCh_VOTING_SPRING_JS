@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/allVotings.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/mainStyle.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -18,13 +18,13 @@
 </header>
 <div class="col-lg-2"></div>
 <div class="col-lg-8">
-    <div style="text-align: center; margin-bottom: 15px">
-        <div class="mainOptions_container">
-            <p class="mainOptions_text">Zarządzanie głosowaniami</p>
+    <div class="center-container">
+        <div class="main_container">
+            <p class="main_text">Zarządzanie głosowaniami</p>
         </div>
-        <a href="/voting/add" style="text-decoration: none">
-        <div class="additionalOptions_container" id="goToAddVotingForm">
-            <p class="additionalOptions_text">Dodaj nowe głosowanie</p>
+        <a href="/voting/add" style="text-decoration: none; color: black">
+        <div class="link_big" id="goToAddVotingForm">
+            <p class="additional_text">Dodaj nowe głosowanie</p>
         </div>
         </a>
     </div>
@@ -41,25 +41,25 @@
                 </div>
                 <div id="collapse${voting.id}" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Opcje:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Opcje:</p>
                             <c:choose>
                                 <c:when test="${voting.closed == false}">
-                                    <div style="text-align: center">
+                                    <div class="center-container">
                                         <button class="btn btn-warning" onclick="window.location.href='/voting/edit/${voting.id}'">Edytuj</button>
                                         <button class="btn btn-danger" onclick="window.location.href='/voting/delete/${voting.id}'">Usuń</button>
                                         <button class="btn btn-primary" onclick="window.location.href='/voting/close/${voting.id}'">Zamknij</button>
                                     </div>
                                 </c:when>
                                 <c:when test="${voting.closed == true}">
-                                    <div style="text-align: center">
+                                    <div class="center-container">
                                         <button class="btn btn-success" onclick="window.location.href='/voting/result/${voting.id}'">Wyniki</button>
                                     </div>
                                 </c:when>
                             </c:choose>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Informacje ogólne:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Informacje ogólne:</p>
                             <p>Czy głosowanie jest:</p>
                             <ul>
                                 <li><b>zamknięte: </b><span id="closed${voting.id}"></span></li>
@@ -73,17 +73,17 @@
                                 <li><b>data zamknięcia: </b><span id="closedDate${voting.id}"></span></li>
                             </ul>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Treść głosowania:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Treść głosowania:</p>
                             <span id="text${voting.id}"></span>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Głosujący:</p>
+                        <div class="additionalClose_container">
+                            <p class="additional_text">Głosujący:</p>
                             <div id="users${voting.id}">
                             </div>
                         </div>
-                        <div class="additionalOptions_container">
-                            <p class="additionalOptions_text">Komentarze:</p>
+                        <div class="additional_container">
+                            <p class="additional_text">Komentarze:</p>
                             <div>Funkcjonalność zostanie dodana w przyszłości</div>
                         </div>
                     </div>

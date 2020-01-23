@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
             function createFieldWithDataFor(result) {
                 let NewResultField = document.createElement("div");
                 NewResultField.className = "user_list";
-                NewResultField.innerText = result.user.firstName + " " + result.user.lastName + ", głos: " + write(result.vote);
+                NewResultField.innerText = result.user.firstName + " " + result.user.lastName + ": " + write(result.vote);
                 return NewResultField;
             }
         }

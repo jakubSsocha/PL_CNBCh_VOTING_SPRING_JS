@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let i = 0; i < user.resultList.length; i++) {
                 let NewResultField = document.createElement("li");
                 NewResultField.innerText = user.resultList[i].voting.name +
-                ": głos: " + writeVote(user.resultList[i].vote);
+                ": " + writeVote(user.resultList[i].vote);
                 rolesContainer.appendChild(NewResultField);
             }
         }

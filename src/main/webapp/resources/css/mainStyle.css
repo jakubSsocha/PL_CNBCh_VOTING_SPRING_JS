@@ -1,0 +1,138 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {height: 450px}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+
+    .row.content {
+        height: auto;
+    }
+}
+
+/* html selectors */
+
+a{
+    text-decoration: none;
+}
+
+input{
+    text-align: center;
+}
+
+button{
+    margin: 10px;
+}
+
+img{
+    margin: 40px;
+}
+
+/* containers */
+
+.main_container{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: rgba(38, 166, 91, 0.8);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.additional_container{
+    padding: 15px;
+    margin: 10px;
+    border-color: rgba(38, 166, 91, 0.6);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainClose_container{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: rgba(37, 116, 169, 0.8);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.additionalClose_container{
+    padding: 15px;
+    margin: 10px;
+    border-color: rgba(37, 116, 169, 0.6);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainDelete_container{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: rgba(217, 30, 24, 0.8);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.additionalDelete_container{
+    padding: 15px;
+    margin: 10px;
+    border-color: rgba(217, 30, 24, 0.6);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.center-container{
+    text-align: center;
+}
+
+/* texts */
+.main_text{
+    margin: 30px;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.additional_text{
+    margin: 10px;
+    font-size: 120%;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* links */
+
+.main_link{
+    color: forestgreen;
+    font-weight: bold;
+}
+
+.link_big{
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-color: rgba(38, 166, 91, 0.6);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+/* lists */
+
+.user_list{
+    padding: 10px;
+    border-color: rgba(30, 139, 195, 0.5);
+    margin-left: 30px;
+}
+
+/* others */
+
+.form-control{
+    margin-bottom: 15px;
+}
