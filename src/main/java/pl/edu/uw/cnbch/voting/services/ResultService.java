@@ -31,4 +31,8 @@ public interface ResultService {
     List<Result> getAllEmptyResultsForUser() throws Exception;
 
     List<Result> getAllUsersResultsForVoting(Long id);
+
+    void setAllUnclosedUserResultInactive(Long id);
+
+    void setAllUnclosedUserResultActive(Long id);
 }

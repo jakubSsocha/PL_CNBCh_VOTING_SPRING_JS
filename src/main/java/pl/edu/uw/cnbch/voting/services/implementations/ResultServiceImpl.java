@@ -172,4 +172,22 @@ public class ResultServiceImpl implements ResultService {
     public List<Result> getAllUsersResultsForVoting(Long id) {
         return resultRepository.findAllFinalResultsForVoting(id);
     }
+
+    @Override
+    public void setAllUnclosedUserResultInactive(Long id) {
+        List<Result> resultList = resultRepository.findAllUserUnclosedResults(id);
+        for(Result r: resultList){
+            r.setActive(false);
+            resultRepository.save(r);
+        }
+    }
+
+    @Override
+    public void setAllUnclosedUserResultActive(Long id) {
+        List<Result> resultList = resultRepository.findAllUserUnclosedResults(id);
+        for(Result r: resultList){
+            r.setActive(true);
+            resultRepository.save(r);
+        }
+    }
 }

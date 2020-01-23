@@ -58,7 +58,7 @@ public class UserController {
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(
-                "Użytkownik utworzony pomyślnie",
+                "Użytkownik utworzony pomyślnie. Konto nieaktywne - przed pierwszym logowaniem skontaktuj się z Administratorem",
                 "success"));
         return "index.jsp";
     }
@@ -116,6 +116,44 @@ public class UserController {
             ));
         }
         return "userResults.jsp";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @RequestMapping("/user/deactivate/{id}")
+    public String deactivateUser(@PathVariable Long id, Model model){
+        try{
+            userService.deactivateUserWithId(id);
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    "Użytkownik został dezaktywowany",
+                    "success"
+            ));
+            return "index.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
+    }
+
+    @Secured("ROLE_ADMIN")
+    @RequestMapping("/user/activate/{id}")
+    public String activateUser(@PathVariable Long id, Model model){
+        try{
+            userService.activateUserWithId(id);
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    "Użytkownik został aktywowany",
+                    "success"
+            ));
+            return "index.jsp";
+        } catch (Exception e){
+            model.addAttribute("message", MessageDTO.generateMessage(
+                    e.getMessage(),
+                    "error"
+            ));
+            return "index.jsp";
+        }
     }
 
 }

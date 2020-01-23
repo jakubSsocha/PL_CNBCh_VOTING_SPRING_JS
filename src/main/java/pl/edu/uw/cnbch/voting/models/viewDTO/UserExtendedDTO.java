@@ -14,6 +14,7 @@ public class UserExtendedDTO {
     @JsonIgnore
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
 
+    private Long id;
     private String name;
     private boolean active;
     private String email;
@@ -22,6 +23,7 @@ public class UserExtendedDTO {
     private List<Result> resultList;
 
     public UserExtendedDTO(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         setActiveValue(user);
         this.email = user.getEmail();
@@ -83,6 +85,14 @@ public class UserExtendedDTO {
 
     public void setResultList(List<Result> resultList) {
         this.resultList = resultList;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     private void setActiveValue(User user){

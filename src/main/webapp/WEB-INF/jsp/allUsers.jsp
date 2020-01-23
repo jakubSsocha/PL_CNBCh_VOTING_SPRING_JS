@@ -42,19 +42,16 @@
                             <c:choose>
                                 <c:when test="${user.active == true}">
                                     <div class="center-container">
-                                        <button class="btn btn-danger"
-                                                onclick="window.location.href='/user/changeStatus/${user.id}'">
-                                            Dezaktywuj Użytkownika
-                                        </button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Dezaktywuj Użytkownika</button>
                                         <button class="btn btn-primary"
                                                 onclick="window.location.href='/user/changeRole/${user.id}'">Zmień Rolę
                                         </button>
-                                    </div>
+                                        </div>
                                 </c:when>
                                 <c:when test="${user.active == false}">
                                     <div class="center-container">
                                         <button class="btn btn-success"
-                                                onclick="window.location.href='/voting/result/${user.id}'">Aktywuj
+                                                onclick="window.location.href='/user/activate/${user.id}'">Aktywuj
                                             Użytkownika
                                         </button>
                                     </div>
@@ -85,9 +82,28 @@
                 </div>
             </div>
         </c:forEach>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" style="color:rgb(217, 30, 24)">Dezaktywacja użytkownika</h4>
+                    </div>
+                    <div class="modal-body center-container">
+                        <p>Próbujesz dezaktywować konto użytkownika:</p>
+                        <p class="additional_text"><span id="user_data"></span></p>
+                    </div>
+                    <div class="modal-footer center-container">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal_button">Dezaktywuj użytkownika</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="col-lg-2"></div>
 </body>
 </html>
 <script src="${pageContext.request.contextPath}/resources/js/allUsers.js" type="application/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/deactivateUser.js" type="application/javascript"></script>

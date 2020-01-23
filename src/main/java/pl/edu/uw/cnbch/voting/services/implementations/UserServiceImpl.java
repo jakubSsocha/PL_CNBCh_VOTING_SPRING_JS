@@ -6,9 +6,11 @@ import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserBasicDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
+import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
 import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
+import pl.edu.uw.cnbch.voting.services.ResultService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import java.time.LocalDateTime;
@@ -19,15 +21,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ResultService resultService;
     private final MainService mainService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
+                           ResultService resultService,
                            MainService mainService,
                            BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.resultService = resultService;
         this.mainService = mainService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -35,13 +40,17 @@ public class UserServiceImpl implements UserService {
     //potrzebne do SpringSecurity
     @Override
     public User findByUserName(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user.getEnabled() == 0){
+            return new User();
+        }
+        return user;
     }
 
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(1);
+        user.setEnabled(0);
         user.setUsername(user.getEmail());
         user.setCreatedDate(LocalDateTime.now());
         Role userRole = roleRepository.findByName("ROLE_USER");
@@ -57,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllActiveUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllActiveUsers();
     }
 
     @Override
@@ -80,5 +89,30 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findUserByID(id);
         mainService.checkIfIsEmpty(user);
         return user.get();
+    }
+
+    @Override
+    public void deactivateUserWithId(Long id) throws Exception{
+        User user = findByUserId(id);
+        checkIfUserIsAdmin(user);
+        user.setEnabled(0);
+        userRepository.save(user);
+        resultService.setAllUnclosedUserResultInactive(id);
+    }
+
+    private void checkIfUserIsAdmin(User user) throws Exception {
+        for (Role r : user.getRoles()) {
+            if (r.getName().equals("ROLE_ADMIN")) {
+                throw new Exception("Nie można usunąć użytkownika który jest Administratorem");
+            }
+        }
+    }
+
+    @Override
+    public void activateUserWithId(Long id) throws Exception {
+        User user = findByUserId(id);
+        user.setEnabled(1);
+        userRepository.save(user);
+        resultService.setAllUnclosedUserResultActive(id);
     }
 }

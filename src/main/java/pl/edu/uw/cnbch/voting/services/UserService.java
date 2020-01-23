@@ -21,4 +21,8 @@ public interface UserService {
     UserExtendedDTO findExtendedDataForUser(Long id) throws Exception;
 
     User findByUserId(Long id) throws Exception;
+
+    void deactivateUserWithId(Long id) throws Exception;
+
+    void activateUserWithId(Long id) throws Exception;
 }
