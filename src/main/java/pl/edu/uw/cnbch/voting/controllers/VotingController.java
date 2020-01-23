@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,12 +41,14 @@ public class VotingController {
         return userService.findAllActiveUsers();
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/add")
     public String goToAddNewVotingForm(Model model) {
         model.addAttribute("voting", new Voting());
         return "createVoting.jsp";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/add")
     public String addNewVotingAndEmptyUsersResults(@Valid Voting voting,
                                                    BindingResult bindingResult,
@@ -68,14 +71,16 @@ public class VotingController {
         return "index.jsp";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/all")
     public String goToAllVotingView(Model model) {
         model.addAttribute("allVotings", votingService.getAllVotingIdData());
         return "allVotings.jsp";
     }
 
-    @GetMapping("/{id}")
     @ResponseBody
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/{id}")
     public VotingDetailsDTO returnAllDataForVotingId(@PathVariable Long id) {
         try {
             votingService.checkIfActive(id);
@@ -85,6 +90,7 @@ public class VotingController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/edit/{id}")
     public String goToEditForm(@PathVariable Long id, Model model) {
         try {
@@ -101,6 +107,7 @@ public class VotingController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/edit/{id}")
     public String editVotingData(@Valid Voting voting,
                                  BindingResult bindingResult,
@@ -121,6 +128,7 @@ public class VotingController {
         return "index.jsp";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/delete/{id}")
     public String goToDeleteForm(@PathVariable Long id,
                                  Model model) {
@@ -142,6 +150,7 @@ public class VotingController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/delete/{id}")
     public String deleteVoting(@ModelAttribute Voting voting,
                                Model model) {
@@ -157,6 +166,7 @@ public class VotingController {
         return "index.jsp";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/close/{id}")
     public String goToCloseForm(@PathVariable Long id,
                                 Model model){
@@ -178,6 +188,7 @@ public class VotingController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/close/{id}")
     public String closeVoting(@ModelAttribute Voting voting,
                               Model model){
@@ -198,6 +209,7 @@ public class VotingController {
         }
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping("/result/{id}")
     public String goToResultForm(@PathVariable Long id,
                                  Model model){

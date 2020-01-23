@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,12 +32,14 @@ public class ResultController {
         return Arrays.asList("ZA", "PRZECIW", "WSTRZYMUJĘ SIĘ");
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/{id}")
     @ResponseBody
     public List<Result> getAllResultForVotingWithId(@PathVariable Long id) {
         return resultService.getAllResultsForVotingWith(id);
     }
 
+    @Secured("ROLE_USER")
     @GetMapping("/vote/{id}")
     public String goToVotingForm(@PathVariable Long id,
                                  Model model) {
@@ -54,6 +57,7 @@ public class ResultController {
         return "vote.jsp";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping("/vote/{id}")
     public String createVotingResult(@Valid Result result,
                                      BindingResult bindingResult,

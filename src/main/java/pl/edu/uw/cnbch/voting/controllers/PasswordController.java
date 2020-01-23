@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,13 +27,14 @@ public class PasswordController {
         this.mainService = mainService;
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/setNew")
     public String goToSetNewPasswordForm(Model model){
         model.addAttribute("passwordChanger", new SetNewPasswordDTO());
         return "setNewPassword.jsp";
     }
 
-    //TODO frontend validation procedure
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping("/setNew")
     public String setUserNew(@Valid SetNewPasswordDTO setNewPasswordDTO,
                              BindingResult bindingResult,
@@ -54,6 +56,7 @@ public class PasswordController {
         return "index.jsp";
     }
 
+    //TODO - password reset mechanism
     @RequestMapping("/reset")
     private String resetPassword(){
         passwordService.resetPassword();

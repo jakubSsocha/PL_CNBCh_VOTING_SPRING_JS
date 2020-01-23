@@ -1,6 +1,7 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,6 +63,7 @@ public class UserController {
         return "index.jsp";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/user/all")
     public String goToAllUsers(Model model) {
         try {
@@ -76,6 +78,7 @@ public class UserController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/user/{id}")
     @ResponseBody
     public UserExtendedDTO getExtendedUserData(@PathVariable Long id, Model model){
@@ -86,6 +89,7 @@ public class UserController {
         }
     }
 
+    @Secured("ROLE_USER")
     @RequestMapping("/user/votings")
     public String goToAllUserActiveVoting(Model model) {
         try {
@@ -100,6 +104,7 @@ public class UserController {
         return "userVotings.jsp";
     }
 
+    @Secured("ROLE_USER")
     @RequestMapping("/user/results")
     public String goToVotingResults(Model model){
         try{
