@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
+import pl.edu.uw.cnbch.voting.models.viewDTO.RolesDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserBasicDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
 import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
@@ -11,6 +12,7 @@ import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
+import pl.edu.uw.cnbch.voting.services.RoleService;
 import pl.edu.uw.cnbch.voting.services.UserService;
 
 import java.time.LocalDateTime;
@@ -20,18 +22,18 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final ResultService resultService;
     private final MainService mainService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
+                           RoleService roleService,
                            ResultService resultService,
                            MainService mainService,
                            BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
         this.resultService = resultService;
         this.mainService = mainService;
         this.passwordEncoder = passwordEncoder;
@@ -48,12 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveInactiveUser(User user) throws Exception {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(0);
         user.setUsername(user.getEmail());
         user.setCreatedDate(LocalDateTime.now());
-        Role userRole = roleRepository.findByName("ROLE_USER");
+        Role userRole = roleService.findByName("ROLE_USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
@@ -114,5 +116,27 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(1);
         userRepository.save(user);
         resultService.setAllUnclosedUserResultActive(id);
+    }
+
+    @Override
+    public void changeRoles(Long id, RolesDTO rolesDTO) throws Exception {
+        List<User> allAdmins = getAllAdmins();
+        User user = findByUserId(id);
+        Role admin = roleService.findByName("ROLE_ADMIN");
+        if(rolesDTO.getRoles().size() < 1){
+            throw new Exception("Każdy użytkownik musi mieć przynajmniej jedną rolę");
+        }
+        if(user.getRoles().contains(admin) && !rolesDTO.getRoles().contains(admin)){
+            if(allAdmins.size() < 2){
+                throw new Exception("Przynajmniej jeden Administrator musi być aktywny");
+            }
+        }
+        user.setRoles(rolesDTO.getRoles());
+        userRepository.save(user);
+    }
+
+    private List<User> getAllAdmins() throws Exception{
+        Role admin = roleService.findByName("ROLE_ADMIN");
+        return userRepository.getAllAdmins(admin);
     }
 }

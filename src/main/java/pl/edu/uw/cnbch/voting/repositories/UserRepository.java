@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.enabled = 1 order by u.lastName asc")
     List<User> findAllActiveUsers();
+
+    @Query("select u from User u where :role member of u.roles ")
+    List<User> getAllAdmins(@Param("role") Role role);
 }

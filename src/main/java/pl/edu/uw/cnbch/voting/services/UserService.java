@@ -1,6 +1,7 @@
 package pl.edu.uw.cnbch.voting.services;
 
 import pl.edu.uw.cnbch.voting.models.entities.User;
+import pl.edu.uw.cnbch.voting.models.viewDTO.RolesDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserBasicDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
 
@@ -10,7 +11,7 @@ public interface UserService {
 
     User findByUserName(String name);
 
-    void saveUser(User user);
+    void saveInactiveUser(User user) throws Exception;
 
     List<User> findAllActiveUsers();
 
@@ -25,4 +26,6 @@ public interface UserService {
     void deactivateUserWithId(Long id) throws Exception;
 
     void activateUserWithId(Long id) throws Exception;
+
+    void changeRoles(Long id, RolesDTO rolesDTO) throws Exception;
 }

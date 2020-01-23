@@ -44,7 +44,7 @@
                                     <div class="center-container">
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Dezaktywuj Użytkownika</button>
                                         <button class="btn btn-primary"
-                                                onclick="window.location.href='/user/changeRole/${user.id}'">Zmień Rolę
+                                                onclick="window.location.href='/user/changeRole/${user.id}'">Zarządzanie rolami
                                         </button>
                                         </div>
                                 </c:when>
