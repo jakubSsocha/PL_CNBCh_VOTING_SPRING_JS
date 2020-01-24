@@ -46,9 +46,9 @@
                             <c:choose>
                                 <c:when test="${voting.closed == false}">
                                     <div class="center-container">
-                                        <button class="btn btn-warning" onclick="window.location.href='/voting/edit/${voting.id}'">Edytuj</button>
+                                        <button class="btn btn-primary" onclick="window.location.href='/voting/edit/${voting.id}'">Edytuj</button>
+                                        <button class="btn btn-warning" onclick="window.location.href='/voting/close/${voting.id}'">Zamknij</button>
                                         <button class="btn btn-danger" onclick="window.location.href='/voting/delete/${voting.id}'">Usuń</button>
-                                        <button class="btn btn-primary" onclick="window.location.href='/voting/close/${voting.id}'">Zamknij</button>
                                     </div>
                                 </c:when>
                                 <c:when test="${voting.closed == true}">

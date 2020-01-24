@@ -59,7 +59,7 @@ img{
     border-radius: 10px;
 }
 
-.mainClose_container{
+.mainEdit_container{
     padding: 15px 35px 15px 35px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -68,10 +68,27 @@ img{
     border-radius: 10px;
 }
 
-.additionalClose_container{
+.additionalEdit_container{
     padding: 15px;
     margin: 10px;
     border-color: rgba(37, 116, 169, 0.6);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.mainClose_container{
+    padding: 15px 35px 15px 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: rgba(230, 126, 34, 0.8);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.additionalClose_container{
+    padding: 15px;
+    margin: 10px;
+    border-color: rgba(230, 126, 34, 0.6);
     border-style: solid;
     border-radius: 10px;
 }

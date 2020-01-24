@@ -44,7 +44,7 @@
             <br/>
         </div>
         <div class="mainClose_container">
-            <div><input type="submit" value="Zamknij głosowanie" class="btn btn-primary" id="submitForm"></div>
+            <div><input type="submit" value="Zamknij głosowanie" class="btn btn-warning" id="submitForm"></div>
             </form:form>
         </div>
         <br/>

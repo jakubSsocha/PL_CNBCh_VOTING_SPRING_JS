@@ -21,14 +21,14 @@
 <div class="col-sm-3"></div>
 <div class="col-sm-6">
     <div class="center-container">
-        <div class="main_container">
+        <div class="mainEdit_container">
             <p class="main_text">Zmień role</p>
             <div>Ustaw role użytkownika ${RolesDTO.name}:</div><br />
             <form:form method="post" modelAttribute="RolesDTO">
                 <form:checkboxes path="roles" items="${Roles}" itemLabel="description"
                                  class="form-control"/>
                 <br /><br />
-                <input type="submit" value="Ustaw role" class="btn btn-success" id="submitForm">
+                <input type="submit" value="Zmień role" class="btn btn-primary" id="submitForm">
             </form:form>
         </div>
     </div>

@@ -97,7 +97,7 @@ public class VotingController {
             votingService.checkIfClosed(id);
             votingService.checkIfActive(id);
             model.addAttribute("voting", votingService.readById(id));
-            return "createVoting.jsp";
+            return "editVoting.jsp";
         } catch (Exception e) {
             model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),
