@@ -1,0 +1,12 @@
+1. Konfiguracja i wysyłanie wiadomości e-mail
+    a. aktywacja konta
+    a. reset hasła
+    b. dodanie użytkownika do głosowania
+    c. usunięcie użytkownika z głosowania
+    d. zamknięcie głosowania
+    e. wysyłanie przypomnień email z oczekującymi głosowaniami
+2. Możliwość załączania plików (więcej niż 1, w dowolnym formacie) pod głosowania
+    a. dodawanie plików - tylko admin
+    b. pobieranie plików - wszyscy użytkownicy z aktywnym głosowaniem
+3. Dodanie modułu komentarzy pod głosowania (do głosowań otwartych i zamkniętych)
+    a. najlepiej z podziałem na odrębne wątki
