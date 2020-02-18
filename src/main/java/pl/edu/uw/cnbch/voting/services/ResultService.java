@@ -8,13 +8,11 @@ import java.util.List;
 
 public interface ResultService {
 
-    void createActiveResultsForAllUsersOf(Voting voting);
+    void createActiveResultsForAllUsersFor(Voting voting);
 
     List<Result> getAllResultsForVotingWith(Long id);
 
-    Result findById(Long id) throws Exception;
-
-    void save(Result result);
+    Result findResultById(Long id) throws Exception;
 
     void saveUserVoteFor(Result result) throws Exception;
 

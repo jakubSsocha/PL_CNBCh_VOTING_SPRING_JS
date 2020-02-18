@@ -42,18 +42,10 @@ public class ResultController {
     @Secured("ROLE_USER")
     @GetMapping("/vote/{id}")
     public String goToVotingForm(@PathVariable Long id,
-                                 Model model) {
-        try {
+                                 Model model) throws Exception {
             resultService.checkIfResultBelongToUser(id);
             resultService.checkIfResultIsActive(id);
-            model.addAttribute("result", resultService.findById(id));
-        } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
-            return "index.jsp";
-        }
+            model.addAttribute("result", resultService.findResultById(id));
         return "vote.jsp";
     }
 

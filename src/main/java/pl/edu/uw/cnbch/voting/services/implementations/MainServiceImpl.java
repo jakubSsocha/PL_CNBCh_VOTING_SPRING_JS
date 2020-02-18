@@ -28,7 +28,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public boolean checkIfIsEmpty(Optional optional) throws Exception {
+    public boolean checkIfOptionalIsEmpty(Optional optional) throws Exception {
         if(!optional.isPresent()){
             throw new Exception("Błąd pobrania informacji z bazy danych");
         }

@@ -7,8 +7,6 @@ import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.RolesDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserBasicDTO;
 import pl.edu.uw.cnbch.voting.models.viewDTO.UserExtendedDTO;
-import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
-import pl.edu.uw.cnbch.voting.repositories.RoleRepository;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
@@ -89,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserId(Long id) throws Exception {
         Optional<User> user = userRepository.findUserByID(id);
-        mainService.checkIfIsEmpty(user);
+        mainService.checkIfOptionalIsEmpty(user);
         return user.get();
     }
 

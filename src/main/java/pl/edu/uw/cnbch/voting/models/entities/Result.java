@@ -99,4 +99,54 @@ public class Result {
     public void setClosed(boolean closed) {
         this.closed = closed;
     }
+
+// Builder and constructors
+
+    public static class Builder{
+        private Voting voting;
+        private User user;
+        private boolean active;
+        private LocalDateTime createdDate;
+        private boolean closed;
+
+        public Builder voting(Voting voting) {
+            this.voting = voting;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder createdDate(LocalDateTime createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public Builder closed(boolean closed) {
+            this.closed = closed;
+            return this;
+        }
+
+        public Result build(){
+            return new Result(this);
+        }
+    }
+
+    private Result (Builder builder){
+        this.voting = builder.voting;
+        this.user = builder.user;
+        this.active = builder.active;
+        this.createdDate = builder.createdDate;
+        this.closed = builder.closed;
+    }
+
+    public Result(){
+    }
 }

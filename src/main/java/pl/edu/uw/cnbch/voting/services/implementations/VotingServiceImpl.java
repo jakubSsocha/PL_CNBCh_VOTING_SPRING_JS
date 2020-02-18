@@ -37,14 +37,14 @@ public class VotingServiceImpl implements VotingService {
     @Override
     public Voting readById(Long id) throws Exception {
         Optional<Voting> voting = votingRepository.findById(id);
-        mainService.checkIfIsEmpty(voting);
+        mainService.checkIfOptionalIsEmpty(voting);
         return voting.get();
     }
 
     @Override
     public Voting readByName(String name) throws Exception {
         Optional<Voting> voting = votingRepository.findByName(name);
-        mainService.checkIfIsEmpty(voting);
+        mainService.checkIfOptionalIsEmpty(voting);
         return voting.get();
     }
 
@@ -102,7 +102,7 @@ public class VotingServiceImpl implements VotingService {
             resultService.encodeAllResultsForVotingId(voting.getId());
         }
         resultService.setAllResultsInactiveForVotingId(voting.getId());
-        resultService.createActiveResultsForAllUsersOf(voting);
+        resultService.createActiveResultsForAllUsersFor(voting);
     }
 
     @Override

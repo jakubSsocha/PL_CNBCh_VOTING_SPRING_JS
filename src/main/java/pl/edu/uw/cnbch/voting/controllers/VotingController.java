@@ -57,7 +57,7 @@ public class VotingController {
             mainService.checkForErrorsIn(bindingResult);
             votingService.create(voting);
             Voting VotingFromDatabase = votingService.readByName(voting.getName());
-            resultService.createActiveResultsForAllUsersOf(VotingFromDatabase);
+            resultService.createActiveResultsForAllUsersFor(VotingFromDatabase);
         } catch (Exception e) {
             model.addAttribute("message", MessageDTO.generateMessage(
                     e.getMessage(),

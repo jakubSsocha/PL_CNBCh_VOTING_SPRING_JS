@@ -34,8 +34,8 @@
             </div>
         </div>
         <div class="main_container">
-            <p class="main_text">Głosuj:</p>
-            <form:radiobuttons items="${votingResults}" path="vote" class="form-control votingOptions"/>
+                <p class="main_text">Głosuj:</p>
+                <form:radiobuttons items="${votingResults}" path="vote" class="form-control"/>
         </div>
         <div class="main_container">
             <div><input type="submit" value="Oddaj głos" class="btn btn-success" id="button"></div>

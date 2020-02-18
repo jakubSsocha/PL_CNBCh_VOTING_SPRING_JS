@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findByName(String name) throws Exception {
         Optional<Role> role = roleRepository.findByName(name);
-        mainService.checkIfIsEmpty(role);
+        mainService.checkIfOptionalIsEmpty(role);
         return role.get();
     }
 

@@ -9,7 +9,7 @@ public interface MainService <T> {
 
     void checkForErrorsIn(BindingResult bindingResult) throws Exception;
 
-    boolean checkIfIsEmpty(Optional<T> optional) throws Exception;
+    boolean checkIfOptionalIsEmpty(Optional<T> optional) throws Exception;
 
     User getLoggedUser() throws Exception;
 
