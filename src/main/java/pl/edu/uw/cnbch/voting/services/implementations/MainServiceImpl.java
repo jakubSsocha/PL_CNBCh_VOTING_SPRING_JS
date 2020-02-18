@@ -4,8 +4,11 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import pl.edu.uw.cnbch.voting.errors.types.UnsuccessfulValidationException;
 import pl.edu.uw.cnbch.voting.models.entities.User;
+import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
 
@@ -21,9 +24,9 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public void checkForErrorsIn(BindingResult bindingResult) throws Exception {
+    public void checkForErrorsIn(BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            throw new Exception("Walidacja nieudana - błędne dane w formularzu");
+            throw new UnsuccessfulValidationException();
         }
     }
 
@@ -47,4 +50,12 @@ public class MainServiceImpl implements MainService {
         }
     }
 
+    @Override
+    public Model addErrorMessageTo(Model model, Exception e) {
+        model.addAttribute("message", MessageDTO.generateMessage(
+                e.getMessage(),
+                "error"
+        ));
+        return model;
+    }
 }

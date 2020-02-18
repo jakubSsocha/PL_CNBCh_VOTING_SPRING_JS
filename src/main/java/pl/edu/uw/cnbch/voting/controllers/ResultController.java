@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ public class ResultController {
     private final ResultService resultService;
     private final MainService mainService;
 
+    @Autowired
     public ResultController(ResultService resultService,
                             MainService mainService) {
         this.resultService = resultService;
@@ -28,7 +30,8 @@ public class ResultController {
     }
 
     @ModelAttribute("votingResults")
-    public List<String> votingResults(){
+    public List<String> votingResults() {
+
         return Arrays.asList("ZA", "PRZECIW", "WSTRZYMUJĘ SIĘ");
     }
 
@@ -36,6 +39,7 @@ public class ResultController {
     @RequestMapping("/{id}")
     @ResponseBody
     public List<Result> getAllResultForVotingWithId(@PathVariable Long id) {
+
         return resultService.getAllResultsForVotingWith(id);
     }
 
@@ -43,9 +47,11 @@ public class ResultController {
     @GetMapping("/vote/{id}")
     public String goToVotingForm(@PathVariable Long id,
                                  Model model) throws Exception {
-            resultService.checkIfResultBelongToUser(id);
-            resultService.checkIfResultIsActive(id);
-            model.addAttribute("result", resultService.findResultById(id));
+
+        resultService.checkIfResultBelongToUser(id);
+        resultService.checkIfResultIsActive(id);
+        model.addAttribute("result", resultService.findResultById(id));
+
         return "vote.jsp";
     }
 
@@ -53,22 +59,20 @@ public class ResultController {
     @PostMapping("/vote/{id}")
     public String createVotingResult(@Valid Result result,
                                      BindingResult bindingResult,
-                                     Model model){
-        try{
-            mainService.checkForErrorsIn(bindingResult);
-            resultService.saveUserVoteFor(result);
-        } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
-            return "index.jsp";
-        }
+                                     Model model) throws Exception {
+
+        mainService.checkForErrorsIn(bindingResult);
+        resultService.saveUserVoteFor(result);
+        addSuccessMessageTo(model);
+
+        return "index.jsp";
+    }
+
+    private Model addSuccessMessageTo(Model model){
         model.addAttribute("message", MessageDTO.generateMessage(
                 "Głos oddany pomyślnie",
                 "success"
         ));
-        return "index.jsp";
+        return model;
     }
-
 }

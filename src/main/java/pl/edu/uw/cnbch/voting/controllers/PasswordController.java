@@ -43,10 +43,7 @@ public class PasswordController {
             mainService.checkForErrorsIn(bindingResult);
             passwordService.setNewPassword(setNewPasswordDTO);
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(

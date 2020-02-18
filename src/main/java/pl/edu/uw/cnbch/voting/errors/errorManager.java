@@ -54,5 +54,13 @@ public class errorManager {
         return "index.jsp";
     }
 
+    @ExceptionHandler(UnsuccessfulValidationException.class)
+    public String UnsuccessfulValidationExceptionHandler(Model model){
+        model.addAttribute("message", MessageDTO.generateMessage(
+                UnsuccessfulValidationException.ErrorMessage,
+                "error"
+        ));
+        return "index.jsp";
+    }
 
 }

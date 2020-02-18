@@ -62,10 +62,7 @@ public class UserController {
                     "error"));
             return "index.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(
@@ -81,10 +78,7 @@ public class UserController {
             model.addAttribute("allUsers", userService.findBasicInfoForAllUsers());
             return "allUsers.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -106,10 +100,7 @@ public class UserController {
         try {
             model.addAttribute("results", resultService.getAllEmptyResultsForUser());
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         return "userVotings.jsp";
@@ -121,10 +112,8 @@ public class UserController {
         try{
             model.addAttribute("votings", votingService.getAllUserClosedVoting());
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
+            return "index.jsp";
         }
         return "userResults.jsp";
     }
@@ -141,10 +130,7 @@ public class UserController {
             ));
             return "index.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -161,10 +147,7 @@ public class UserController {
             ));
             return "index.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -178,10 +161,7 @@ public class UserController {
             model.addAttribute("RolesDTO", new RolesDTO(user));
             return "changeRoles.jsp";
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -199,10 +179,7 @@ public class UserController {
             ));
             return "index.jsp";
         }catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }

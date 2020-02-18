@@ -59,10 +59,7 @@ public class VotingController {
             Voting VotingFromDatabase = votingService.readByName(voting.getName());
             resultService.createActiveResultsForAllUsersFor(VotingFromDatabase);
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(
@@ -99,10 +96,7 @@ public class VotingController {
             model.addAttribute("voting", votingService.readById(id));
             return "editVoting.jsp";
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -116,10 +110,7 @@ public class VotingController {
             mainService.checkForErrorsIn(bindingResult);
             votingService.edit(voting);
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         model.addAttribute("message", MessageDTO.generateMessage(
@@ -142,10 +133,7 @@ public class VotingController {
             ));
             return "deleteVoting.jsp";
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -157,10 +145,7 @@ public class VotingController {
         try {
             votingService.delete(voting);
         } catch (Exception e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
         return "index.jsp";
@@ -180,10 +165,7 @@ public class VotingController {
             ));
             return "closeVoting.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -201,10 +183,7 @@ public class VotingController {
             ));
             return "index.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }
@@ -219,10 +198,7 @@ public class VotingController {
             model.addAttribute("voting", votingService.readById(id));
             return "votingResult.jsp";
         } catch (Exception e){
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    e.getMessage(),
-                    "error"
-            ));
+            mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
     }

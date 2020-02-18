@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.services;
 
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 
@@ -12,5 +13,7 @@ public interface MainService <T> {
     boolean checkIfOptionalIsEmpty(Optional<T> optional) throws Exception;
 
     User getLoggedUser() throws Exception;
+
+    Model addErrorMessageTo(Model model, Exception e);
 
 }
