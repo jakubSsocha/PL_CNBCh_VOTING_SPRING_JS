@@ -8,7 +8,6 @@ import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
 import pl.edu.uw.cnbch.voting.repositories.ResultRepository;
-import pl.edu.uw.cnbch.voting.repositories.UserRepository;
 import pl.edu.uw.cnbch.voting.services.MainService;
 import pl.edu.uw.cnbch.voting.services.ResultService;
 
@@ -48,7 +47,7 @@ public class ResultServiceImpl implements ResultService {
                 oldResult.setActive(true);
                 result = oldResult;
             } else {
-                throw new ResultAlreadyExistException();
+                throw new ResultAlreadyExistsException();
             }
         }
         save(result);

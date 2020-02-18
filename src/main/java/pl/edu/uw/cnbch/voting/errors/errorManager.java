@@ -3,10 +3,7 @@ package pl.edu.uw.cnbch.voting.errors;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.edu.uw.cnbch.voting.errors.types.AccessDeniedException;
-import pl.edu.uw.cnbch.voting.errors.types.LoadFromDatabaseException;
-import pl.edu.uw.cnbch.voting.errors.types.InactiveResultException;
-import pl.edu.uw.cnbch.voting.errors.types.ResultAlreadyExistException;
+import pl.edu.uw.cnbch.voting.errors.types.*;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 
 @ControllerAdvice
@@ -39,10 +36,19 @@ public class errorManager {
         return "index.jsp";
     }
 
-    @ExceptionHandler(ResultAlreadyExistException.class)
+    @ExceptionHandler(ResultAlreadyExistsException.class)
     public String ResultDoesntExistExceptionHandler(Model model){
         model.addAttribute("message", MessageDTO.generateMessage(
-                ResultAlreadyExistException.ErrorMessage,
+                ResultAlreadyExistsException.ErrorMessage,
+                "error"
+        ));
+        return "index.jsp";
+    }
+
+    @ExceptionHandler(EmptyVoiceException.class)
+    public String EmptyVoiceExceptionHandler(Model model){
+        model.addAttribute("message", MessageDTO.generateMessage(
+                EmptyVoiceException.ErrorMessage,
                 "error"
         ));
         return "index.jsp";
