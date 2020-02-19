@@ -165,9 +165,9 @@ public class VotingController {
     public String goToResultForm(@PathVariable Long id,
                                  Model model)
             throws Exception {
-            votingService.checkIfActive(id);
-            model.addAttribute("votingResult", votingService.generateResultForVoting(id));
-            model.addAttribute("voting", votingService.getVotingBy(id));
-            return "votingResult.jsp";
+        votingService.checkIfActive(id);
+        model.addAttribute("votingResult", votingService.generateResultForVoting(id));
+        model.addAttribute("voting", votingService.getVotingBy(id));
+        return "votingResult.jsp";
     }
 }

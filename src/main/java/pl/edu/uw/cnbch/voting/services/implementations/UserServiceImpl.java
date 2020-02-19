@@ -1,7 +1,12 @@
 package pl.edu.uw.cnbch.voting.services.implementations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.uw.cnbch.voting.errors.types.AdminDeleteException;
+import pl.edu.uw.cnbch.voting.errors.types.LoadFromDatabaseException;
+import pl.edu.uw.cnbch.voting.errors.types.NoSystemAdminException;
+import pl.edu.uw.cnbch.voting.errors.types.UserNoRoleException;
 import pl.edu.uw.cnbch.voting.models.entities.Role;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.RolesDTO;
@@ -25,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final MainService mainService;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleService roleService,
                            ResultService resultService,
@@ -53,20 +59,14 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(0);
         user.setUsername(user.getEmail());
         user.setCreatedDate(LocalDateTime.now());
-        Role userRole = roleService.findByName("ROLE_USER");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-        userRepository.save(user);
+        user.setRoles(new HashSet<Role>(Arrays.asList(roleService.findByName("ROLE_USER"))));
+        saveUserInDatabase(user);
     }
 
     @Override
     public void saveUserNewPassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Override
-    public List<User> findAllActiveUsers() {
-        return userRepository.findAllActiveUsers();
+        saveUserInDatabase(user);
     }
 
     @Override
@@ -79,40 +79,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserExtendedDTO findExtendedDataForUser(Long id) throws Exception {
-        User user = findByUserId(id);
-        return new UserExtendedDTO(user);
+    public UserExtendedDTO findExtendedDataForUser(Long id) {
+        return new UserExtendedDTO(findByUserId(id));
     }
 
     @Override
-    public User findByUserId(Long id) throws Exception {
-        Optional<User> user = userRepository.findUserByID(id);
-        mainService.checkIfOptionalIsEmpty(user);
-        return user.get();
-    }
-
-    @Override
-    public void deactivateUserWithId(Long id) throws Exception{
+    public void deactivateUserWithId(Long id) {
         User user = findByUserId(id);
         checkIfUserIsAdmin(user);
         user.setEnabled(0);
-        userRepository.save(user);
+        saveUserInDatabase(user);
         resultService.setAllUnclosedUserResultInactive(id);
     }
 
-    private void checkIfUserIsAdmin(User user) throws Exception {
+    private void checkIfUserIsAdmin(User user) {
         for (Role r : user.getRoles()) {
             if (r.getName().equals("ROLE_ADMIN")) {
-                throw new Exception("Nie można usunąć użytkownika który jest Administratorem");
+                throw new AdminDeleteException();
             }
         }
     }
 
     @Override
-    public void activateUserWithId(Long id) throws Exception {
+    public void activateUserWithId(Long id){
         User user = findByUserId(id);
         user.setEnabled(1);
-        userRepository.save(user);
+        saveUserInDatabase(user);
         resultService.setAllUnclosedUserResultActive(id);
     }
 
@@ -120,21 +112,55 @@ public class UserServiceImpl implements UserService {
     public void changeRoles(Long id, RolesDTO rolesDTO) throws Exception {
         List<User> allAdmins = getAllAdmins();
         User user = findByUserId(id);
-        Role admin = roleService.findByName("ROLE_ADMIN");
-        if(rolesDTO.getRoles().size() < 1){
-            throw new Exception("Każdy użytkownik musi mieć przynajmniej jedną rolę");
+        if(userHasLessThanOneRole(rolesDTO)){
+            throw new UserNoRoleException();
         }
-        if(user.getRoles().contains(admin) && !rolesDTO.getRoles().contains(admin)){
+        if(userIsLastAdminInSystem(user,rolesDTO)){
             if(allAdmins.size() < 2){
-                throw new Exception("Przynajmniej jeden Administrator musi być aktywny");
+                throw new NoSystemAdminException();
             }
         }
         user.setRoles(rolesDTO.getRoles());
-        userRepository.save(user);
+        saveUserInDatabase(user);
     }
 
     private List<User> getAllAdmins() throws Exception{
         Role admin = roleService.findByName("ROLE_ADMIN");
         return userRepository.getAllAdmins(admin);
     }
+
+    private boolean userHasLessThanOneRole(RolesDTO rolesDTO){
+        if(rolesDTO.getRoles().size() <1){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean userIsLastAdminInSystem(User user, RolesDTO rolesDTO) throws Exception{
+        Role admin = roleService.findByName("ROLE_ADMIN");
+        if(user.getRoles().contains(admin) && !rolesDTO.getRoles().contains(admin)){
+            return true;
+        }
+        return false;
+    }
+
+// repository methods
+
+    private void saveUserInDatabase(User user){
+        userRepository.save(user);
+    }
+
+    @Override
+    public User findByUserId(Long id) {
+        return userRepository.findUserByID(id).orElseThrow(
+                () -> new LoadFromDatabaseException()
+        );
+    }
+
+    @Override
+    public List<User> findAllActiveUsers() {
+        return userRepository.findAllActiveUsers();
+    }
+
+
 }

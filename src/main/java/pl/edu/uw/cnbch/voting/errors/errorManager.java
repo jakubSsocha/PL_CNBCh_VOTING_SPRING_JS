@@ -1,6 +1,7 @@
 package pl.edu.uw.cnbch.voting.errors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +11,8 @@ import pl.edu.uw.cnbch.voting.services.ErrorMessageService;
 @ControllerAdvice
 public class errorManager {
 
+    private final String DATA_INTEGRITY_EXCEPTION_MESSAGE =
+            "Użytkownik o podanym adresie e-mail jest już zarejestrowany w bazie danych";
     private final String MESSAGE_PAGE_HANDLER_ADDRESS = "index.jsp";
 
     private ErrorMessageService errorMessageService;
@@ -93,6 +96,34 @@ public class errorManager {
     public String VotingNameNotUniqueExceptionHandler(Model model){
         errorMessageService.addMessageTo(model,
                 VotingNameNotUniqueException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(AdminDeleteException.class)
+    public String AdminDeleteExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                AdminDeleteException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(NoSystemAdminException.class)
+    public String NoSystemAdminExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                NoSystemAdminException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(UserNoRoleException.class)
+    public String UserNoRoleExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                UserNoRoleException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public String DataIntegrityViolationExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                DATA_INTEGRITY_EXCEPTION_MESSAGE);
         return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 

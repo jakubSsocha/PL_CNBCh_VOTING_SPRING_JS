@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @ModelAttribute("Roles")
-    public List<Role> getRoleList(){
+    public List<Role> getRoleList() {
         return roleService.findAllRoles();
     }
 
@@ -63,19 +63,10 @@ public class UserController {
     @PostMapping("/add")
     public String validateAndCreateUser(@Valid User user,
                                         BindingResult bindingResult,
-                                        Model model) {
-        try {
-            mainService.checkForErrorsIn(bindingResult);
-            userService.saveInactiveUser(user);
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    "Użytkownik o podanym adresie e-mail:<br />" + user.getEmail() + "<br /> jest już zarejestrowany w bazie danych",
-                    "error"));
-            return "index.jsp";
-        } catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+                                        Model model)
+            throws Exception {
+        mainService.checkForErrorsIn(bindingResult);
+        userService.saveInactiveUser(user);
         successMessageService.addMessageTo(model,
                 SUCCESS_USER_CREATED);
         return "index.jsp";
@@ -84,108 +75,75 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     @RequestMapping("/all")
     public String goToAllUsers(Model model) {
-        try {
-            model.addAttribute("allUsers", userService.findBasicInfoForAllUsers());
-            return "allUsers.jsp";
-        } catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+        model.addAttribute("allUsers", userService.findBasicInfoForAllUsers());
+        return "allUsers.jsp";
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping("/{id}")
     @ResponseBody
-    public UserExtendedDTO getExtendedUserData(@PathVariable Long id){
-        try{
-            return userService.findExtendedDataForUser(id);
-        } catch (Exception e){
-            return new UserExtendedDTO();
-        }
+    public UserExtendedDTO getExtendedUserData(@PathVariable Long id)
+            throws Exception {
+        return userService.findExtendedDataForUser(id);
     }
 
     @Secured("ROLE_USER")
     @RequestMapping("/votings")
-    public String goToAllUserActiveVoting(Model model) {
-        try {
-            model.addAttribute("results", resultService.getAllEmptyResultsForUser());
-        } catch (Exception e) {
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+    public String goToAllUserActiveVoting(Model model)
+            throws Exception {
+        model.addAttribute("results", resultService.getAllEmptyResultsForUser());
         return "userVotings.jsp";
     }
 
     @Secured("ROLE_USER")
     @RequestMapping("/results")
-    public String goToVotingResults(Model model){
-        try{
-            model.addAttribute("votings", votingService.getAllUserClosedVoting());
-        } catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+    public String goToVotingResults(Model model)
+            throws Exception {
+        model.addAttribute("votings", votingService.getAllUserClosedVoting());
         return "userResults.jsp";
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping("/deactivate/{id}")
     public String deactivateUser(@PathVariable Long id,
-                                 Model model){
-        try{
-            userService.deactivateUserWithId(id);
-            successMessageService.addMessageTo(model,
-                    SUCCESS_USER_DEACTIVATED);
-            return "index.jsp";
-        } catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+                                 Model model)
+            throws Exception {
+        userService.deactivateUserWithId(id);
+        successMessageService.addMessageTo(model,
+                SUCCESS_USER_DEACTIVATED);
+        return "index.jsp";
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping("/activate/{id}")
     public String activateUser(@PathVariable Long id,
-                               Model model){
-        try{
-            userService.activateUserWithId(id);
-            successMessageService.addMessageTo(model,
-                    SUCCESS_USER_ACTIVATED);
-            return "index.jsp";
-        } catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+                               Model model)
+            throws Exception {
+        userService.activateUserWithId(id);
+        successMessageService.addMessageTo(model,
+                SUCCESS_USER_ACTIVATED);
+        return "index.jsp";
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/changeRole/{id}")
     public String goToChangeRoleForm(@PathVariable Long id,
-                                     Model model) {
-        try {
-            User user= userService.findByUserId(id);
-            model.addAttribute("RolesDTO", new RolesDTO(user));
-            return "changeRoles.jsp";
-        } catch (Exception e) {
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+                                     Model model)
+            throws Exception {
+        User user = userService.findByUserId(id);
+        model.addAttribute("RolesDTO", new RolesDTO(user));
+        return "changeRoles.jsp";
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/changeRole/{id}")
     public String goToChangeRoleForm(@ModelAttribute RolesDTO rolesDTO,
                                      @PathVariable Long id,
-                                     Model model) {
-        try{
-            userService.changeRoles(id, rolesDTO);
-            successMessageService.addMessageTo(model,
-                    SUCCESS_USER_ROLES_CHANGED);
-            return "index.jsp";
-        }catch (Exception e){
-            mainService.addErrorMessageTo(model,e);
-            return "index.jsp";
-        }
+                                     Model model)
+            throws Exception {
+        userService.changeRoles(id, rolesDTO);
+        successMessageService.addMessageTo(model,
+                SUCCESS_USER_ROLES_CHANGED);
+        return "index.jsp";
     }
-
 }
