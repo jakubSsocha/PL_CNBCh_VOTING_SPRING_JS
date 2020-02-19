@@ -194,8 +194,7 @@ public class VotingServiceImpl implements VotingService {
 
     @Override
     public List<Voting> getAllUserClosedVoting() throws Exception {
-        User user = mainService.getLoggedUser();
-        return votingRepository.findAllUserActiveClosedVoting(user);
+        return votingRepository.findAllUserActiveClosedVoting(mainService.getLoggedUser());
     }
 
     private boolean checkIfExist(String name) {
