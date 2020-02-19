@@ -2,6 +2,10 @@ package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.uw.cnbch.voting.errors.types.LoadFromDatabaseException;
+import pl.edu.uw.cnbch.voting.errors.types.VotingClosedException;
+import pl.edu.uw.cnbch.voting.errors.types.VotingInactiveException;
+import pl.edu.uw.cnbch.voting.errors.types.VotingNameNotUniqueException;
 import pl.edu.uw.cnbch.voting.models.entities.Result;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.entities.Voting;
@@ -16,7 +20,6 @@ import pl.edu.uw.cnbch.voting.services.VotingService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VotingServiceImpl implements VotingService {
@@ -27,7 +30,10 @@ public class VotingServiceImpl implements VotingService {
     private final MainService mainService;
     private final ResultService resultService;
 
-    public VotingServiceImpl(VotingRepository votingRepository, BCryptPasswordEncoder passwordEncoder, MainService mainService, ResultService resultService) {
+    public VotingServiceImpl(VotingRepository votingRepository,
+                             BCryptPasswordEncoder passwordEncoder,
+                             MainService mainService,
+                             ResultService resultService) {
         this.votingRepository = votingRepository;
         this.passwordEncoder = passwordEncoder;
         this.mainService = mainService;
@@ -35,21 +41,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public Voting readById(Long id) throws Exception {
-        Optional<Voting> voting = votingRepository.findById(id);
-        mainService.checkIfOptionalIsEmpty(voting);
-        return voting.get();
-    }
-
-    @Override
-    public Voting readByName(String name) throws Exception {
-        Optional<Voting> voting = votingRepository.findByName(name);
-        mainService.checkIfOptionalIsEmpty(voting);
-        return voting.get();
-    }
-
-    @Override
-    public void create(Voting voting) throws Exception {
+    public void create(Voting voting){
         ifDoesntExistSaveInDatabase(newVoting(voting));
     }
 
@@ -61,19 +53,11 @@ public class VotingServiceImpl implements VotingService {
         return voting;
     }
 
-    private void ifDoesntExistSaveInDatabase(Voting voting) throws Exception {
+    private void ifDoesntExistSaveInDatabase(Voting voting) {
         if (checkIfExist(voting.getName())) {
-            throw new Exception("Głosowanie o podanej nazwie już istnieje w bazie danych");
+            throw new VotingNameNotUniqueException();
         } else {
-            votingRepository.save(voting);
-        }
-    }
-
-    private boolean checkIfExist(String name) {
-        if (votingRepository.findByName(name).isPresent()) {
-            return true;
-        } else {
-            return false;
+            saveInDatabase(voting);
         }
     }
 
@@ -87,17 +71,12 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public List<Voting> getAllActiveVotingData() {
-        return votingRepository.selectAllActiveVotingOrdered();
-    }
-
-    @Override
-    public void edit(Voting voting) throws Exception {
+    public void edit(Voting voting){
         Voting oldSettings = readByName(voting.getName());
         boolean wasSecret = oldSettings.isSecret();
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
-        votingRepository.save(voting);
+        saveInDatabase(voting);
         if (!wasSecret && voting.isSecret()) {
             resultService.encodeAllResultsForVotingId(voting.getId());
         }
@@ -106,23 +85,23 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public boolean checkIfClosed(Long id) throws Exception {
-        Voting voting = readById(id);
-        if (voting.isClosed()) {
-            throw new Exception("Głosowanie zamknięte - nie można go modyfikować");
-        } else return false;
+    public boolean checkIfClosed(Long id) {
+        if (getVotingBy(id).isClosed()) {
+            throw new VotingClosedException();
+        }
+        return false;
     }
 
     @Override
-    public boolean checkIfActive(Long id) throws Exception {
-        Voting voting = readById(id);
-        if (!voting.isActive()) {
-            throw new Exception("Głosowanie zostało usunięte - nie można go modyfikować");
-        } else return true;
+    public boolean checkIfActive(Long id){
+        if (!getVotingBy(id).isActive()) {
+            throw new VotingInactiveException();
+        }
+        return true;
     }
 
     @Override
-    public void delete(Voting voting) throws Exception {
+    public void delete(Voting voting){
         Voting oldSettings = readByName(voting.getName());
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
@@ -130,11 +109,11 @@ public class VotingServiceImpl implements VotingService {
         checkIfClosed(voting.getId());
         resultService.setAllResultsInactiveForVotingId(voting.getId());
         voting.setActive(false);
-        votingRepository.save(voting);
+        saveInDatabase(voting);
     }
 
     @Override
-    public void close(Voting voting) throws Exception {
+    public void close(Voting voting){
         checkIfClosed(voting.getId());
         Voting oldSettings = readByName(voting.getName());
         LocalDateTime now = LocalDateTime.now();
@@ -144,18 +123,17 @@ public class VotingServiceImpl implements VotingService {
         voting.setUsers(oldSettings.getUsers());
         voting.setClosedDate(now);
         voting.setClosed(true);
-        votingRepository.save(voting);
+        saveInDatabase(voting);
     }
 
     @Override
-    public VotingResultDTO generateResultForVoting(Long id) throws Exception {
-        Voting voting = readById(id);
-        int[] result = countResults(voting);
+    public VotingResultDTO generateResultForVoting(Long id){
+        int[] result = countResults(getVotingBy(id));
         return new VotingResultDTO(
                 result[0],
                 result[1],
                 result[2],
-                resultService.getAllUsersResultsForVoting(voting.getId())
+                resultService.getAllUsersResultsForVoting(id)
         );
     }
 
@@ -191,14 +169,44 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
+    public VotingDetailsDTO getDetailsForVoting(Long id) {
+        return new VotingDetailsDTO(getVotingBy(id));
+    }
+
+// repository methods
+
+    private void saveInDatabase(Voting voting) {
+        votingRepository.save(voting);
+    }
+
+    @Override
+    public Voting getVotingBy(Long id) {
+        return votingRepository.findById(id).orElseThrow(
+                () -> new LoadFromDatabaseException()
+        );
+    }
+
+    @Override
+    public Voting readByName(String name) {
+        return votingRepository.findByName(name).orElseThrow(
+                () -> new LoadFromDatabaseException()
+        );
+    }
+
+    @Override
     public List<Voting> getAllUserClosedVoting() throws Exception {
         User user = mainService.getLoggedUser();
         return votingRepository.findAllUserActiveClosedVoting(user);
     }
 
-    @Override
-    public VotingDetailsDTO getDetailsForVoting(Long id) throws Exception {
-        Voting voting = readById(id);
-        return new VotingDetailsDTO(voting);
+    private boolean checkIfExist(String name) {
+        return votingRepository.findByName(name).isPresent();
     }
+
+    @Override
+    public List<Voting> getAllActiveVotingData() {
+        return votingRepository.selectAllActiveVotingOrdered();
+    }
+
+
 }

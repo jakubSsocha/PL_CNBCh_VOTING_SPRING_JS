@@ -1,5 +1,6 @@
 package pl.edu.uw.cnbch.voting.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,12 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    private final String SUCCESS_USER_CREATED =
+            "Użytkownik utworzony pomyślnie. Konto wymaga akceptacji administratora";
+    private final String SUCCESS_USER_DEACTIVATED = "Użytkownik został dezaktywowany";
+    private final String SUCCESS_USER_ACTIVATED = "Użytkownik został aktywowany";
+    private final String SUCCESS_USER_ROLES_CHANGED = "Zmiana ról użytkownika zakończona sukcesem";
+
     private final UserService userService;
     private final ResultService resultService;
     private final VotingService votingService;
@@ -27,6 +34,7 @@ public class UserController {
     private final RoleService roleService;
     private final SuccessMessageService successMessageService;
 
+    @Autowired
     public UserController(UserService userService,
                           ResultService resultService,
                           VotingService votingService,
@@ -68,9 +76,8 @@ public class UserController {
             mainService.addErrorMessageTo(model,e);
             return "index.jsp";
         }
-        model.addAttribute("message", MessageDTO.generateMessage(
-                "Użytkownik utworzony pomyślnie. Konto nieaktywne - przed pierwszym logowaniem skontaktuj się z Administratorem",
-                "success"));
+        successMessageService.addMessageTo(model,
+                SUCCESS_USER_CREATED);
         return "index.jsp";
     }
 
@@ -127,10 +134,8 @@ public class UserController {
                                  Model model){
         try{
             userService.deactivateUserWithId(id);
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    "Użytkownik został dezaktywowany",
-                    "success"
-            ));
+            successMessageService.addMessageTo(model,
+                    SUCCESS_USER_DEACTIVATED);
             return "index.jsp";
         } catch (Exception e){
             mainService.addErrorMessageTo(model,e);
@@ -144,10 +149,8 @@ public class UserController {
                                Model model){
         try{
             userService.activateUserWithId(id);
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    "Użytkownik został aktywowany",
-                    "success"
-            ));
+            successMessageService.addMessageTo(model,
+                    SUCCESS_USER_ACTIVATED);
             return "index.jsp";
         } catch (Exception e){
             mainService.addErrorMessageTo(model,e);
@@ -176,10 +179,8 @@ public class UserController {
                                      Model model) {
         try{
             userService.changeRoles(id, rolesDTO);
-            model.addAttribute("message", MessageDTO.generateMessage(
-                    "Zmiana ról użytkownika zakończona sukcesem",
-                    "success"
-            ));
+            successMessageService.addMessageTo(model,
+                    SUCCESS_USER_ROLES_CHANGED);
             return "index.jsp";
         }catch (Exception e){
             mainService.addErrorMessageTo(model,e);

@@ -11,7 +11,7 @@ public interface VotingService {
 
     void create(Voting voting) throws Exception;
 
-    Voting readById(Long id) throws Exception;
+    Voting getVotingBy(Long id) throws Exception;
 
     Voting readByName(String name) throws Exception;
 

@@ -2,6 +2,8 @@ package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.uw.cnbch.voting.errors.types.IncorrectPasswordException;
+import pl.edu.uw.cnbch.voting.errors.types.PasswordsNotEqualException;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.SetNewPasswordDTO;
 import pl.edu.uw.cnbch.voting.services.MainService;
@@ -27,7 +29,7 @@ public class PasswordServiceImpl implements PasswordService {
     public void isPasswordCorrect(String password) throws Exception {
         User user = mainService.getLoggedUser();
         if(!bCryptPasswordEncoder.matches(password,user.getPassword())){
-            throw new Exception("Podane hasło do konta jest nieprawidłowe!");
+            throw new IncorrectPasswordException();
         }
     }
 
@@ -42,9 +44,9 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     private void checkIfBothPasswordsAreEquals(String firstPassword,
-                                                  String secondPassword) throws Exception{
+                                                  String secondPassword){
         if(!firstPassword.equals(secondPassword)){
-            throw new Exception("Podane nowe hasła nie są takie same");
+            throw new PasswordsNotEqualException();
         }
     }
 

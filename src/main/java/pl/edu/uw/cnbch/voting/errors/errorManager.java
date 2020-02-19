@@ -75,4 +75,25 @@ public class errorManager {
         return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
+    @ExceptionHandler(VotingClosedException.class)
+    public String VotingClosedExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                VotingClosedException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(VotingInactiveException.class)
+    public String VotingInactiveExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                VotingInactiveException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(VotingNameNotUniqueException.class)
+    public String VotingNameNotUniqueExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                VotingNameNotUniqueException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
 }
