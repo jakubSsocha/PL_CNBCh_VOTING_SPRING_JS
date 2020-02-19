@@ -41,7 +41,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public void create(Voting voting){
+    public void create(Voting voting) {
         ifDoesntExistSaveInDatabase(newVoting(voting));
     }
 
@@ -71,7 +71,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public void edit(Voting voting){
+    public void edit(Voting voting) {
         Voting oldSettings = readByName(voting.getName());
         boolean wasSecret = oldSettings.isSecret();
         voting.setCreatedDate(oldSettings.getCreatedDate());
@@ -93,7 +93,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public boolean checkIfActive(Long id){
+    public boolean checkIfActive(Long id) {
         if (!getVotingBy(id).isActive()) {
             throw new VotingInactiveException();
         }
@@ -101,7 +101,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public void delete(Voting voting){
+    public void delete(Voting voting) {
         Voting oldSettings = readByName(voting.getName());
         voting.setCreatedDate(oldSettings.getCreatedDate());
         voting.setLastModificationDate(LocalDateTime.now());
@@ -113,7 +113,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public void close(Voting voting){
+    public void close(Voting voting) {
         checkIfClosed(voting.getId());
         Voting oldSettings = readByName(voting.getName());
         LocalDateTime now = LocalDateTime.now();
@@ -127,7 +127,7 @@ public class VotingServiceImpl implements VotingService {
     }
 
     @Override
-    public VotingResultDTO generateResultForVoting(Long id){
+    public VotingResultDTO generateResultForVoting(Long id) {
         int[] result = countResults(getVotingBy(id));
         return new VotingResultDTO(
                 result[0],
@@ -152,20 +152,19 @@ public class VotingServiceImpl implements VotingService {
                 }
             }
             return result;
-        } else {
-            for (Result r : voting.getResults()) {
-                if (r.getVote() == null) {
-                    continue;
-                } else if (r.getVote().equals("ZA")) {
-                    result[0] += 1;
-                } else if (r.getVote().equals("PRZECIW")) {
-                    result[1] += 1;
-                } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")) {
-                    result[2] += 1;
-                }
-            }
-            return result;
         }
+        for (Result r : voting.getResults()) {
+            if (r.getVote() == null) {
+                continue;
+            } else if (r.getVote().equals("ZA")) {
+                result[0] += 1;
+            } else if (r.getVote().equals("PRZECIW")) {
+                result[1] += 1;
+            } else if (r.getVote().equals("WSTRZYMUJĘ SIĘ")) {
+                result[2] += 1;
+            }
+        }
+        return result;
     }
 
     @Override
