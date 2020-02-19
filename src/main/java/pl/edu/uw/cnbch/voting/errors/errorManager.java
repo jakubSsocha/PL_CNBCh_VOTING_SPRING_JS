@@ -1,66 +1,78 @@
 package pl.edu.uw.cnbch.voting.errors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.edu.uw.cnbch.voting.errors.types.*;
-import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
+import pl.edu.uw.cnbch.voting.services.ErrorMessageService;
 
 @ControllerAdvice
 public class errorManager {
 
+    private final String MESSAGE_PAGE_HANDLER_ADDRESS = "index.jsp";
+
+    private ErrorMessageService errorMessageService;
+
+    @Autowired
+    public errorManager(ErrorMessageService errorMessageService) {
+        this.errorMessageService = errorMessageService;
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public String AccessDeniedExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                AccessDeniedException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                AccessDeniedException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
     @ExceptionHandler(LoadFromDatabaseException.class)
     public String DatabaseLoadExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                LoadFromDatabaseException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                LoadFromDatabaseException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
     @ExceptionHandler(InactiveResultException.class)
     public String InactiveResultExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                InactiveResultException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                InactiveResultException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
     @ExceptionHandler(ResultAlreadyExistsException.class)
     public String ResultDoesntExistExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                ResultAlreadyExistsException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                ResultAlreadyExistsException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
     @ExceptionHandler(EmptyVoiceException.class)
     public String EmptyVoiceExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                EmptyVoiceException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                EmptyVoiceException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
     @ExceptionHandler(UnsuccessfulValidationException.class)
     public String UnsuccessfulValidationExceptionHandler(Model model){
-        model.addAttribute("message", MessageDTO.generateMessage(
-                UnsuccessfulValidationException.ErrorMessage,
-                "error"
-        ));
-        return "index.jsp";
+        errorMessageService.addMessageTo(model,
+                UnsuccessfulValidationException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(PasswordsNotEqualException.class)
+    public String PasswordNotEqualExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                PasswordsNotEqualException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public String IncorrectPasswordExceptionHandler(Model model){
+        errorMessageService.addMessageTo(model,
+                IncorrectPasswordException.ErrorMessage);
+        return MESSAGE_PAGE_HANDLER_ADDRESS;
     }
 
 }

@@ -25,17 +25,20 @@ public class UserController {
     private final VotingService votingService;
     private final MainService mainService;
     private final RoleService roleService;
+    private final SuccessMessageService successMessageService;
 
     public UserController(UserService userService,
                           ResultService resultService,
                           VotingService votingService,
                           MainService mainService,
-                          RoleService roleService) {
+                          RoleService roleService,
+                          SuccessMessageService successMessageService) {
         this.userService = userService;
         this.resultService = resultService;
         this.votingService = votingService;
         this.mainService = mainService;
         this.roleService = roleService;
+        this.successMessageService = successMessageService;
     }
 
     @ModelAttribute("Roles")

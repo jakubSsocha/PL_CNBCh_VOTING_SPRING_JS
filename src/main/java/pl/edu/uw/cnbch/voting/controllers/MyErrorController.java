@@ -11,6 +11,7 @@ public class MyErrorController implements ErrorController {
     public String handleError() {
         return "error.jsp";
     }
+
     @Override
     public String getErrorPath() {
         return "/error";
