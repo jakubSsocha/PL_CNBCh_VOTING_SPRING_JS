@@ -16,13 +16,6 @@ public class ErrorMessageServiceImpl implements ErrorMessageService {
     private final String MESSAGE_TYPE = "error";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final MainService mainService;
-
-    @Autowired
-    public ErrorMessageServiceImpl(MainService mainService) {
-        this.mainService = mainService;
-    }
-
     @Override
     public Model addMessageTo(Model model, String message){
         saveMessageIntoLog(message);

@@ -14,6 +14,4 @@ public interface MainService <T> {
 
     User getLoggedUser() throws Exception;
 
-    Model addErrorMessageTo(Model model, Exception e);
-
 }

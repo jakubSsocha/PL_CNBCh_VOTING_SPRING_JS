@@ -50,12 +50,4 @@ public class MainServiceImpl implements MainService {
         }
     }
 
-    @Override
-    public Model addErrorMessageTo(Model model, Exception e) {
-        model.addAttribute("message", MessageDTO.generateMessage(
-                e.getMessage(),
-                "error"
-        ));
-        return model;
-    }
 }

@@ -2,10 +2,6 @@ package pl.edu.uw.cnbch.voting.models.viewDTO;
 
 public class MessageDTO {
 
-    public static MessageDTO generateMessage(String text, String type){
-        return new MessageDTO(text, type);
-    }
-
     private String text;
     private String type;
 
@@ -13,10 +9,6 @@ public class MessageDTO {
         this.text = builder.text;
         this.type = builder.type;
 
-    }
-    private MessageDTO(String text, String type) {
-        this.text = text;
-        this.type = type;
     }
 
     public String getText() {
