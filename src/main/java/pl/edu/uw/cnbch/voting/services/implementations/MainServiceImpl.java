@@ -31,14 +31,6 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public boolean checkIfOptionalIsEmpty(Optional optional) throws Exception {
-        if(!optional.isPresent()){
-            throw new Exception("Błąd pobrania informacji z bazy danych");
-        }
-        return false;
-    }
-
-    @Override
     public User getLoggedUser() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {

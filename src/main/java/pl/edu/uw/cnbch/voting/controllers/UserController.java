@@ -130,8 +130,8 @@ public class UserController {
     public String goToChangeRoleForm(@PathVariable Long id,
                                      Model model)
             throws Exception {
-        User user = userService.findByUserId(id);
-        model.addAttribute("RolesDTO", new RolesDTO(user));
+        model.addAttribute("RolesDTO",
+                new RolesDTO(userService.findByUserId(id)));
         return "changeRoles.jsp";
     }
 

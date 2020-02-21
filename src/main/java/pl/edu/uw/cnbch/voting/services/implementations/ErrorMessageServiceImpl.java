@@ -2,12 +2,10 @@ package pl.edu.uw.cnbch.voting.services.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
 import pl.edu.uw.cnbch.voting.services.ErrorMessageService;
-import pl.edu.uw.cnbch.voting.services.MainService;
 
 @Service
 public class ErrorMessageServiceImpl implements ErrorMessageService {

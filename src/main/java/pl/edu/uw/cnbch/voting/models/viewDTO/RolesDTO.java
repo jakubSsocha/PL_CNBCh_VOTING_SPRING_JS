@@ -32,6 +32,4 @@ public class RolesDTO {
         this.name = user.getName();
     }
 
-    public RolesDTO() {
-    }
 }
