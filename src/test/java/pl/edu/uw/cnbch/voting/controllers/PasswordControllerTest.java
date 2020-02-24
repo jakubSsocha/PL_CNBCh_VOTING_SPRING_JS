@@ -41,10 +41,16 @@ public class PasswordControllerTest {
 
     @WithMockUser(roles = {"USER", "ADMIN"})
     @Test
-    public void go_To_Set_New_Password_Page() throws Exception {
+    public void go_to_set_new_password_page() throws Exception {
         mockMvc.perform(get("/password/setNew"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("setNewPassword.jsp"));
+    }
+
+    @Test
+    public void go_to_set_new_password_page_noLogInUser() throws Exception {
+        mockMvc.perform(get("/password/setNew"))
+                .andExpect(status().is3xxRedirection());
     }
 
 }
