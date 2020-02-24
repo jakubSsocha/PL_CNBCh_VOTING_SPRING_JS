@@ -42,20 +42,23 @@ public class ResultControllerTest {
     @WithMockUser(roles = "USER")
     @Test
     public void get_jsonFormat_result_user() throws Exception {
-        mockMvc.perform(get("/result/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/result/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
 
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void get_jsonFormat_result_admin() throws Exception {
-        mockMvc.perform(get("/result/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/result/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void get_jsonFormat_result_noLogInUser() throws Exception {
-        mockMvc.perform(get("/result/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/result/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection());
     }
 

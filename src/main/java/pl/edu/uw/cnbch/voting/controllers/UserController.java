@@ -137,7 +137,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/changeRole/{id}")
-    public String goToChangeRoleForm(@ModelAttribute RolesDTO rolesDTO,
+    public String ChangeUserRoles(@ModelAttribute RolesDTO rolesDTO,
                                      @PathVariable Long id,
                                      Model model)
             throws Exception {
