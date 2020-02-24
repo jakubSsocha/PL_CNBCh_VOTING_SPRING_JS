@@ -9,7 +9,7 @@ import pl.edu.uw.cnbch.voting.errors.types.*;
 import pl.edu.uw.cnbch.voting.services.ErrorMessageService;
 
 @ControllerAdvice
-public class errorManager {
+public class ErrorManager {
 
     private final String DATA_INTEGRITY_EXCEPTION_MESSAGE =
             "Użytkownik o podanym adresie e-mail jest już zarejestrowany w bazie danych";
@@ -18,7 +18,7 @@ public class errorManager {
     private ErrorMessageService errorMessageService;
 
     @Autowired
-    public errorManager(ErrorMessageService errorMessageService) {
+    public ErrorManager(ErrorMessageService errorMessageService) {
         this.errorMessageService = errorMessageService;
     }
 
