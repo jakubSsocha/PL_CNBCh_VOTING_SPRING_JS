@@ -3,6 +3,8 @@ package pl.edu.uw.cnbch.voting.controllers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,10 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.edu.uw.cnbch.voting.models.entities.Role;
+import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.RolesDTO;
 import pl.edu.uw.cnbch.voting.services.*;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,6 +51,13 @@ public class UserControllerTest {
 
     @MockBean
     private ErrorMessageService errorMessageService;
+
+    @Before
+    public void before() throws Exception{
+        User user = mock(User.class);
+        when(userService.findByUserId(1l)).thenReturn(user);
+    }
+
 
     @Test
     public void go_to_create_user_form() throws Exception {

@@ -32,4 +32,8 @@ public class RolesDTO {
         this.name = user.getName();
     }
 
+    //TODO - jak to zrobić bez konstruktora bezargumentowego który jest potrzebny jedynie do testowania a nie do aplikacji??
+    public RolesDTO(){
+
+    }
 }
