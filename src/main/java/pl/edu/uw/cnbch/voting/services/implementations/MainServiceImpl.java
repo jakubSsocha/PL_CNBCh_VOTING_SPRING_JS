@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import pl.edu.uw.cnbch.voting.errors.types.LoadFromDatabaseException;
 import pl.edu.uw.cnbch.voting.errors.types.UnsuccessfulValidationException;
 import pl.edu.uw.cnbch.voting.models.entities.User;
 import pl.edu.uw.cnbch.voting.models.viewDTO.MessageDTO;
@@ -31,14 +32,14 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public User getLoggedUser() throws Exception {
+    public User getLoggedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             User user = userRepository.findByUsername(currentUserName);
             return user;
         } else {
-            throw new Exception("Błąd bazy danych");
+            throw new LoadFromDatabaseException();
         }
     }
 
